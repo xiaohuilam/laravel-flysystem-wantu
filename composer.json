@@ -10,11 +10,14 @@
         }
     ],
     "autoload": {
-        "AliMedia\\": "sdk",
-        "XiaohuiLam\\LaravelFilesystem\\Wantu": "src"
+        "psr-4": {
+            "AliMedia\\": "sdk/",
+            "XiaohuiLam\\LaravelFilesystem\\Wantu\\": "src/"
+        }
     },
     "minimum-stability": "stable",
     "require": {
-        "laravel/framework": "~5.0"
+        "laravel/framework": "~5.0",
+        "league/flysystem": "^1.0"
     }
 }

@@ -1,5 +1,7 @@
 <?php
-namespace AliMedia;
+namespace AliMedia\Utils;
+
+use AliMedia\Conf\Conf;
 
 class UploadOption
 {

@@ -1,5 +1,5 @@
 <?php
-namespace AliMedia;
+namespace AliMedia\Conf;
 
 class Conf
 {

@@ -1,5 +1,5 @@
 <?php
-namespace AliMedia;
+namespace AliMedia\Utils;
 
 /**管理时的选项*/
 final class ManageOption extends ResourceInfo

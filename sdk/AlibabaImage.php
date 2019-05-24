@@ -1,13 +1,19 @@
 <?php
-use AliMedia\ManageOption;
-use AliMedia\MediaEncodeOption;
-use AliMedia\SnapShotOption;
+namespace AliMedia;
+
+use AliMedia\Conf\Conf;
+use AliMedia\Utils\UploadPolicy;
+use AliMedia\Utils\UploadOption;
+use AliMedia\Utils\SnapShotOption;
+use AliMedia\Utils\MediaEncodeOption;
+use AliMedia\Utils\ManageOption;
+use AliMedia\Core\UploadClient;
+use AliMedia\Core\ManageClient;
 
 if (!defined('ALI_IMAGE_SDK_PATH')) {
 	define('ALI_IMAGE_SDK_PATH', dirname(__FILE__));
 }
-require_once(ALI_IMAGE_SDK_PATH . '/core/upload_client.class.php');
-require_once(ALI_IMAGE_SDK_PATH . '/core/manage_client.class.php');
+
 class AlibabaImage
 {
 	private $upload_client;
@@ -35,7 +41,7 @@ class AlibabaImage
 		$this->sk = $sk;
 		$this->type = $type;
 		$this->upload_client = new UploadClient($ak, $sk, $type);
-		$this->manage_client = new ManageCLient($ak, $sk, $type);
+		$this->manage_client = new ManageClient($ak, $sk, $type);
 	}
 
 	/**

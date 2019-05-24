@@ -1,8 +1,10 @@
 <?php
-namespace AliMedia;
+namespace AliMedia\Core;
 
-use AliMedia\ManageOption;
-use AliMedia\MediaResOption;
+use AliMedia\Utils\ManageOption;
+use AliMedia\Utils\MediaResOption;
+use AliMedia\Conf\Conf;
+use AliMedia\Utils\ResourceInfo;
 
 if (!defined('ALI_IMAGE_SDK_PATH')) {
 	define('ALI_IMAGE_SDK_PATH', dirname(__FILE__));

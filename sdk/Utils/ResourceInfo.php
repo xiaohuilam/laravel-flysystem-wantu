@@ -1,5 +1,5 @@
 <?php
-namespace AliMedia;
+namespace AliMedia\Utils;
 
 /**文件资源类*/
 class ResourceInfo

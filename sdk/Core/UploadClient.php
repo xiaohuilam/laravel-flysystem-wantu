@@ -1,5 +1,11 @@
 <?php
-namespace AliMedia;
+namespace AliMedia\Core;
+
+use AliMedia\Conf\Conf;
+use AliMedia\Utils\UploadPolicy;
+use AliMedia\Utils\UploadOption;
+use AliMedia\Utils\UpOptionType;
+use AliMedia\Utils\EncodeUtils;
 
 if (!defined('ALI_IMAGE_SDK_PATH')) {
 	define('ALI_IMAGE_SDK_PATH', dirname(__FILE__));

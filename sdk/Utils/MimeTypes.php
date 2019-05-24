@@ -1,5 +1,5 @@
 <?php
-namespace AliMedia;
+namespace AliMedia\Utils;
 
 class MimeTypes
 {

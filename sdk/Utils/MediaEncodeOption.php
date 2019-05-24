@@ -1,5 +1,5 @@
 <?php
-namespace AliMedia;
+namespace AliMedia\Utils;
 
 /**多媒体转码的参数*/
 class MediaEncodeOption extends MediaResOption{

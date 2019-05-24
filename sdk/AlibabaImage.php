@@ -10,10 +10,6 @@ use AliMedia\Utils\ManageOption;
 use AliMedia\Core\UploadClient;
 use AliMedia\Core\ManageClient;
 
-if (!defined('ALI_IMAGE_SDK_PATH')) {
-	define('ALI_IMAGE_SDK_PATH', dirname(__FILE__));
-}
-
 class AlibabaImage
 {
 	private $upload_client;
@@ -27,12 +23,9 @@ class AlibabaImage
 	/**
 	 * 构造函数
 	 *
-	 * @param string $ak
-	 *        	云存储公钥
-	 * @param string $sk
-	 *        	云存储私钥
-	 * @param string $type
-	 *        	可选，兼容TOP与tea云的 ak/sk
+	 * @param string $ak 云存储公钥
+	 * @param string $sk 云存储私钥
+	 * @param string $type 可选，兼容TOP与tea云的 ak/sk
 	 * @throws Exception
 	 */
 	public function __construct($ak, $sk, $type = Conf::TYPE_TOP)

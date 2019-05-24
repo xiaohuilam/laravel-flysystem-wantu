@@ -6,8 +6,8 @@ class Conf
     const CHARSET = "UTF-8";
     const SDK_VERSION = '2.0.3';
 
-    const UPLOAD_HOST_MEDIA = "http://upload.media.aliyun.com";        //文件上传的地址
-    const MANAGE_HOST_MEDIA = "http://rs.media.aliyun.com";            //服务管理的地址
+    const UPLOAD_HOST_MEDIA = "https://upload.media.aliyun.com";        //文件上传的地址
+    const MANAGE_HOST_MEDIA = "https://rs.media.aliyun.com";            //服务管理的地址
     const MANAGE_API_VERSION = "3.0";        //资源管理接口版本
     const SCAN_PORN_VERSION = "3.1";        //黄图扫描接口版本
     const MEDIA_ENCODE_VERSION = "3.0";        //媒体转码接口版本

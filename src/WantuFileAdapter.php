@@ -204,7 +204,7 @@ class WantuFileAdapter extends AbstractAdapter
      */
     public function getMetadata($path)
     {
-        return $this->client->getFileInfo($path);
+        return $this->client->getFileInfo($this->namespace, preg_replace('/^\./', '', dirname($path)), last(explode("\\", $path)));
     }
 
     /**

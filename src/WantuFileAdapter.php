@@ -6,6 +6,7 @@ use League\Flysystem\Adapter\Polyfill\NotSupportingVisibilityTrait;
 use AliMedia\AlibabaImage as Client;
 use AliMedia\Utils\UploadPolicy;
 use League\Flysystem\Config;
+use Illuminate\Support\Str;
 
 class WantuFileAdapter extends AbstractAdapter
 {
@@ -91,6 +92,7 @@ class WantuFileAdapter extends AbstractAdapter
      */
     public function rename($path, $newpath)
     {
+        return $this->client->renameFile($this->namespace, preg_replace('/^\./', '', dirname($path)), last(explode("\\", $path)), preg_replace('/^\./', '', dirname($newpath)), last(explode("\\", $newpath)));
     }
 
     /**
@@ -114,6 +116,7 @@ class WantuFileAdapter extends AbstractAdapter
      */
     public function delete($path)
     {
+        return $this->client->deleteFile($this->namespace, preg_replace('/^\./', '', dirname($path)), last(explode("\\", $path)));
     }
 
     /**
@@ -125,6 +128,7 @@ class WantuFileAdapter extends AbstractAdapter
      */
     public function deleteDir($dirname)
     {
+        return $this->client->deleteDir($this->namespace, $dirname);
     }
 
     /**
@@ -137,6 +141,7 @@ class WantuFileAdapter extends AbstractAdapter
      */
     public function createDir($dirname, Config $config)
     {
+        return $this->client->createDir($this->namespace, $dirname);
     }
 
     /**
@@ -148,6 +153,11 @@ class WantuFileAdapter extends AbstractAdapter
      */
     public function has($path)
     {
+        if (Str::endsWith($path, "/")) {
+            return $this->client->existsFolder($this->namespace,  preg_replace('/^\./' , '', dirname( $path)));
+        } else {
+            return $this->client->existsFile($this->namespace, preg_replace('/^\./', '', dirname($path)), last(explode("\\", $path)));
+        }
     }
 
     /**
@@ -182,6 +192,7 @@ class WantuFileAdapter extends AbstractAdapter
      */
     public function listContents($directory = '', $recursive = false)
     {
+        return $this->client->listFiles($this->namespace, $directory, 1, 1000);
     }
 
     /**
@@ -193,6 +204,7 @@ class WantuFileAdapter extends AbstractAdapter
      */
     public function getMetadata($path)
     {
+        return $this->client->getFileInfo($path);
     }
 
     /**

@@ -38,7 +38,7 @@ class WantuFileAdapter extends AbstractAdapter
      */
     public function write($path, $contents, Config $config)
     {
-        $uploadPolicy = new UploadPolicy($this->namespace, dirname($path), last(explode("\\", $path)));
+        $uploadPolicy = new UploadPolicy($this->namespace, preg_replace('/^\./', '', dirname($path)), last(explode("\\", $path)));
         return $this->client->uploadData($contents, $uploadPolicy);
     }
 

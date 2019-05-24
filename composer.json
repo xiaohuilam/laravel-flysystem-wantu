@@ -1,0 +1,20 @@
+{
+    "name": "xiaohuilam/laravel-flysystem-wantu",
+    "description": "laravel flysystem adapter for wantu",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "xiaohui.lam",
+            "email": "xiaohui.lam@aliyun.com"
+        }
+    ],
+    "autoload": {
+        "AliMedia\\": "sdk",
+        "XiaohuiLam\\LaravelFilesystem\\Wantu": "src"
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "laravel/framework": "~5.0"
+    }
+}

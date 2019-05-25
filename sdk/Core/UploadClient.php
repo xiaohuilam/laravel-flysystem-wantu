@@ -495,6 +495,12 @@ class UploadClient
 			return "ALIMEDIASDK_PHP_CLOUD/" . Conf::SDK_VERSION;
 		}
 	}
+
+	public function getUploadToken(UploadPolicy $uploadPolicy)
+	{
+		return $this->_getUploadToken($uploadPolicy);
+	}
+
 	/**生成上传凭证
 	 * @param UploadPolicy $uploadPolicy
 	 * @return string 上传时的凭证token

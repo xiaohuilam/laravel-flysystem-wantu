@@ -36,7 +36,7 @@ class WantuFileAdapter extends AbstractAdapter
      */
     public function __construct($accessKey, $secretKey, $namespace, $origin)
     {
-        $client = new Client($accessKey, $secretKey);
+        $client = new Client($accessKey, $secretKey, $namespace);
         $this->setClient($client, $namespace, $origin);
     }
 
@@ -376,6 +376,7 @@ class WantuFileAdapter extends AbstractAdapter
     {
         return $this->bucketManager ?: $this->bucketManager = new BucketManager($this->getAuthManager());
     }
+
     /**
      * @return \Qiniu\Auth
      */
@@ -416,7 +417,7 @@ class WantuFileAdapter extends AbstractAdapter
      */
     public function getUploadToken($key = null, $expires = 3600, $policy = null, $strictPolice = null)
     {
-        return $this->getAuthManager()->uploadToken($this->bucket, $key, $expires, $policy, $strictPolice);
+        return $this->client->getUploadToken($key, $expires, $policy, $strictPolice);
     }
     /**
      * @param array $stats

@@ -16,6 +16,7 @@ class AlibabaImage
 	private $manage_client;
 	private $ak;
 	private $sk;
+	private $namespace;
 	private $type; // "TOP"和"CLOUD"两种模式
 
 	static $RUN_LEVEL = Conf::RUN_LEVEL_RELEASE;	//设置SDK运行级别
@@ -28,13 +29,29 @@ class AlibabaImage
 	 * @param string $type 可选，兼容TOP与tea云的 ak/sk
 	 * @throws Exception
 	 */
-	public function __construct($ak, $sk, $type = Conf::TYPE_TOP)
+	public function __construct($ak, $sk, $namespace, $type = Conf::TYPE_TOP)
 	{
 		$this->ak = $ak;
 		$this->sk = $sk;
+		$this->namespace = $namespace;
 		$this->type = $type;
 		$this->upload_client = new UploadClient($ak, $sk, $type);
 		$this->manage_client = new ManageClient($ak, $sk, $type);
+	}
+
+	public function getUploadToken($key = null, $expires = 3600, $policy = null, $strictPolice = null)
+	{
+		if (!$key) {
+			$key = '${uuid}.${ext}';
+		}
+		if ($key) {
+			$dir = preg_replace('/^\./', '', dirname($key));
+			$key = last(explode("/", $key));
+		}
+
+		$policy = new UploadPolicy($this->namespace, $dir, $key, null, $expires);
+
+		return $this->upload_client->getUploadToken($policy);
 	}
 
 	/**

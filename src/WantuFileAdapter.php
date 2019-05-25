@@ -22,6 +22,19 @@ class WantuFileAdapter extends AbstractAdapter
      */
     private $namespace = null;
 
+    /**
+     * QiniuAdapter constructor.
+     *
+     * @param string $accessKey
+     * @param string $secretKey
+     * @param string $namespace
+     */
+    public function __construct($accessKey, $secretKey, $namespace)
+    {
+        $client = new Client($accessKey, $secretKey);
+        $this->setClient($client, $namespace);
+    }
+
     public function setClient(Client $client, $namespace)
     {
         $this->client = $client;

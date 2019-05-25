@@ -2,9 +2,10 @@
 
 namespace XiaohuiLam\LaravelFilesystem\Wantu;
 
-use Illuminate\Support\ServiceProvider;
-use League\Flysystem\Filesystem;
 use League\Flysystem\Config;
+use League\Flysystem\Filesystem;
+use Illuminate\Support\ServiceProvider;
+use XiaohuiLam\LaravelFilesystem\Wantu\Plugins\GetUrl;
 use XiaohuiLam\LaravelFilesystem\Wantu\Plugins\UploadToken;
 
 class WantuFileServiceProvider extends ServiceProvider
@@ -21,7 +22,7 @@ class WantuFileServiceProvider extends ServiceProvider
             $flysystem = new Filesystem($adapter, new Config(['disable_asserts' => true]));
             // $flysystem->addPlugin(new FetchFile());
             $flysystem->addPlugin(new UploadToken());
-            // $flysystem->addPlugin(new FileUrl());
+            $flysystem->addPlugin(new GetUrl());
             // $flysystem->addPlugin(new PrivateDownloadUrl());
             // $flysystem->addPlugin(new RefreshFile());
             return $flysystem;

@@ -3,6 +3,8 @@
 namespace XiaohuiLam\LaravelFilesystem\Wantu;
 
 use Illuminate\Support\ServiceProvider;
+use League\Flysystem\Filesystem;
+use League\Flysystem\Config;
 
 class WantuFileServiceProvider extends ServiceProvider
 {

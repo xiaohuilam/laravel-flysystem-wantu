@@ -23,22 +23,28 @@ class WantuFileAdapter extends AbstractAdapter
     private $namespace = null;
 
     /**
+     * @var string
+     */
+    private $domain = null;
+
+    /**
      * QiniuAdapter constructor.
      *
      * @param string $accessKey
      * @param string $secretKey
      * @param string $namespace
      */
-    public function __construct($accessKey, $secretKey, $namespace)
+    public function __construct($accessKey, $secretKey, $namespace, $origin)
     {
         $client = new Client($accessKey, $secretKey);
-        $this->setClient($client, $namespace);
+        $this->setClient($client, $namespace, $origin);
     }
 
-    public function setClient(Client $client, $namespace)
+    public function setClient(Client $client, $namespace, $origin)
     {
         $this->client = $client;
         $this->namespace = $namespace;
+        $this->domain = $origin;
     }
 
     /**
@@ -52,7 +58,7 @@ class WantuFileAdapter extends AbstractAdapter
      */
     public function write($path, $contents, Config $config)
     {
-        $uploadPolicy = new UploadPolicy($this->namespace, preg_replace('/^\./', '', dirname($path)), last(explode("\\", $path)));
+        $uploadPolicy = new UploadPolicy($this->namespace, preg_replace('/^\./', '', dirname($path)), last(explode("/", $path)));
         return $this->client->uploadData($contents, $uploadPolicy);
     }
 
@@ -67,6 +73,19 @@ class WantuFileAdapter extends AbstractAdapter
      */
     public function writeStream($path, $resource, Config $config)
     {
+        $contents = '';
+
+        while (!feof($resource)) {
+            $contents .= fread($resource, 1024);
+        }
+
+        $response = $this->write($path, $contents, $config);
+
+        if (false === $response) {
+            return $response;
+        }
+
+        return compact('path');
     }
 
     /**
@@ -80,6 +99,9 @@ class WantuFileAdapter extends AbstractAdapter
      */
     public function update($path, $contents, Config $config)
     {
+        $this->delete($path);
+
+        return $this->write($path, $contents, $config);
     }
 
     /**
@@ -93,6 +115,19 @@ class WantuFileAdapter extends AbstractAdapter
      */
     public function updateStream($path, $resource, Config $config)
     {
+        $this->delete($path);
+
+        return $this->writeStream($path, $resource, $config);
+    }
+
+    public function put($path, $contents, Config $config)
+    {
+        return $this->write($path, $contents, $config);
+    }
+
+    public function putStream($path, $resource, Config $config)
+    {
+        return $this->write($path, $resource, $config);
     }
 
     /**
@@ -105,7 +140,7 @@ class WantuFileAdapter extends AbstractAdapter
      */
     public function rename($path, $newpath)
     {
-        return $this->client->renameFile($this->namespace, preg_replace('/^\./', '', dirname($path)), last(explode("\\", $path)), preg_replace('/^\./', '', dirname($newpath)), last(explode("\\", $newpath)));
+        return $this->client->renameFile($this->namespace, preg_replace('/^\./', '', dirname($path)), last(explode("/", $path)), preg_replace('/^\./', '', dirname($newpath)), last(explode("/", $newpath)));
     }
 
     /**
@@ -129,7 +164,7 @@ class WantuFileAdapter extends AbstractAdapter
      */
     public function delete($path)
     {
-        return $this->client->deleteFile($this->namespace, preg_replace('/^\./', '', dirname($path)), last(explode("\\", $path)));
+        return $this->client->deleteFile($this->namespace, preg_replace('/^\./', '', dirname($path)), last(explode("/", $path)));
     }
 
     /**
@@ -169,9 +204,10 @@ class WantuFileAdapter extends AbstractAdapter
         if (Str::endsWith($path, "/")) {
             return $this->client->existsFolder($this->namespace,  preg_replace('/^\./' , '', dirname( $path)));
         } else {
-            return $this->client->existsFile($this->namespace, preg_replace('/^\./', '', dirname($path)), last(explode("\\", $path)));
+            return $this->client->existsFile($this->namespace, preg_replace('/^\./', '', dirname($path)), last(explode("/", $path)));
         }
     }
+
 
     /**
      * Read a file.
@@ -182,6 +218,8 @@ class WantuFileAdapter extends AbstractAdapter
      */
     public function read($path)
     {
+        $contents = file_get_contents($this->getUrl($path));
+        return compact('contents', 'path');
     }
 
     /**
@@ -217,7 +255,7 @@ class WantuFileAdapter extends AbstractAdapter
      */
     public function getMetadata($path)
     {
-        return $this->client->getFileInfo($this->namespace, preg_replace('/^\./', '', dirname($path)), last(explode("\\", $path)));
+        return $this->client->getFileInfo($this->namespace, preg_replace('/^\./', '', dirname($path)), last(explode("/", $path)));
     }
 
     /**
@@ -394,6 +432,19 @@ class WantuFileAdapter extends AbstractAdapter
             'size' => $stats['fsize'],
         ];
     }
+
+    /**
+     * Get resource url.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    public function getUrl($path)
+    {
+        return $this->normalizeHost($this->domain) . ltrim($path, '/');
+    }
+
     /**
      * @param string $domain
      *

@@ -14,8 +14,8 @@ class WantuFileServiceProvider extends ServiceProvider
             $adapter = new WantuFileAdapter(
                 $config['access_key'],
                 $config['secret_key'],
-                $config['namespace']//,
-                //$config['domain']
+                $config['namespace'],
+                $config['domain']
             );
             $flysystem = new Filesystem($adapter, new Config(['disable_asserts' => true]));
             // $flysystem->addPlugin(new FetchFile());

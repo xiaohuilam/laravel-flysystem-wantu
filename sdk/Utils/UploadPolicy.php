@@ -12,7 +12,7 @@ class UploadPolicy
     public $expiration;                             // 过期时间[expiration time, unix time, in milliseconds]
 
     /*如下属性是可选的[The following attributes are optional]*/
-    public $detectMime;                             // 是否进行类型检测[is auto detecte media file mime type, default is true]
+    public $detectMime = Conf::DETECT_MIME_TRUE;                             // 是否进行类型检测[is auto detecte media file mime type, default is true]
     public $dir;                                    // 路径[media file dir, magic vars and custom vars are supported]
     public $name;                                   // 上传到服务端的文件名[media file name, magic vars and custom vars are supported]
     public $sizeLimit;                              // 文件大小限制[upload size limited, in bytes]

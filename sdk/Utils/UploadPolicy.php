@@ -34,6 +34,7 @@ class UploadPolicy
 
     public function toArray()
     {
+        return (array) $this;
         $array = [];
         foreach ($this as $attribute => $value) {
             if ($value !== null) {

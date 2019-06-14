@@ -20,7 +20,9 @@ class ManageClient
 		$this->type = $type;
 		$this->manage_host = Conf::MANAGE_HOST_MEDIA;
 	}
-	/**文件是否存在
+
+	/**
+	 * 文件是否存在
 	 * @param string $namespace 空间名，必须
 	 * @param string $dir 路径
 	 * @param string $filename 文件名
@@ -37,7 +39,9 @@ class ManageClient
 		$uri = '/' . Conf::MANAGE_API_VERSION . '/files/' . $resourceId . '/exist';
 		return $this->_send_request('GET', $uri);
 	}
-	/**获取文件的元信息(meta信息)
+
+	/**
+	 * 获取文件的元信息(meta信息)
 	 * @param string $namespace 空间名，必须
 	 * @param string $dir 路径
 	 * @param string $filename 文件名
@@ -54,7 +58,9 @@ class ManageClient
 		$uri = '/' . Conf::MANAGE_API_VERSION . '/files/' . $resourceId;
 		return $this->_send_request('GET', $uri);
 	}
-	/**重命名文件
+
+	/**
+	 * 重命名文件
 	 * @param string $namespace 空间名，必须
 	 * @param string $dir 路径
 	 * @param string $filename 文件名
@@ -79,7 +85,9 @@ class ManageClient
 		$uri = '/' . Conf::MANAGE_API_VERSION . '/files/' . $resourceId . "/rename/" . $newResourceId;
 		return $this->_send_request('POST', $uri);
 	}
-	/**获取指定目录下的文件列表
+
+	/**
+	 * 获取指定目录下的文件列表
 	 * @param string $namespace 空间名，必须
 	 * @param string $dir 路径
 	 * @param number $page 页数
@@ -101,7 +109,9 @@ class ManageClient
 		$uri = '/' . Conf::MANAGE_API_VERSION . '/files?' . $queryParas;
 		return $this->_send_request('GET', $uri);
 	}
-	/**删除文件
+
+	/**
+	 * 删除文件
 	 * @param string $namespace 空间名，必须
 	 * @param string $dir 路径
 	 * @param string $filename 文件名
@@ -118,7 +128,9 @@ class ManageClient
 		$uri = '/' . Conf::MANAGE_API_VERSION . '/files/' . $resourceId;
 		return $this->_send_request('DELETE', $uri);
 	}
-	/**文件夹是否存在
+
+	/**
+	 * 文件夹是否存在
 	 * @param string $namespace 空间名，必须
 	 * @param string $dir 路径，即文件夹
 	 * @return array
@@ -134,7 +146,9 @@ class ManageClient
 		$uri = '/' . Conf::MANAGE_API_VERSION . '/folders/' . $resourceId . '/exist';
 		return $this->_send_request('GET', $uri);
 	}
-	/**创建文件夹
+
+	/**
+	 * 创建文件夹
 	 * @param string $namespace 空间名，必须
 	 * @param string $dir 路径，即文件夹
 	 * @return array
@@ -150,7 +164,9 @@ class ManageClient
 		$uri = '/' . Conf::MANAGE_API_VERSION . '/folders/' . $resourceId;
 		return $this->_send_request('POST', $uri);
 	}
-	/**获取指定目录下的文件夹列表
+
+	/**
+	 * 获取指定目录下的文件夹列表
 	 * @param string $namespace 空间名，必须
 	 * @param string $dir 路径，指定目录
 	 * @param number $page 页数
@@ -172,7 +188,9 @@ class ManageClient
 		$uri = '/' . Conf::MANAGE_API_VERSION . '/folders?' . $queryParas;
 		return $this->_send_request('GET', $uri);
 	}
-	/**删除文件夹
+
+	/**
+	 * 删除文件夹
 	 * @param string $namespace 空间名，必须
 	 * @param string $dir 路径，即文件夹
 	 * @return array
@@ -205,7 +223,9 @@ class ManageClient
 		$httpBody = $this->createHttpBody($bodyArray); //http body字符串信息
 		return $this->_send_request('POST', $uri, $httpBody);
 	}
-	/**鉴黄反馈feedback接口
+
+	/**
+	 * 鉴黄反馈feedback接口
 	 * @param ManageOption $pornFbInfos 反馈信息
 	 * @return array
 	 */
@@ -218,7 +238,9 @@ class ManageClient
 		}
 		return $this->_send_request('POST', $uri, $httpBody);
 	}
-	/**多媒体(音视频)转码服务接口
+
+	/**
+	 * 多媒体(音视频)转码服务接口
 	 * @param MediaResOption $encodeOption 转码参数选项
 	 * @return array
 	 */
@@ -231,7 +253,9 @@ class ManageClient
 		}
 		return $this->_send_request('POST', $uri, $httpBody);
 	}
-	/**多媒体转码任务查询接口
+
+	/**
+	 * 多媒体转码任务查询接口
 	 * @param string $taskId 转码任务ID
 	 */
 	public function mediaEncodeQuery($taskId)
@@ -241,7 +265,9 @@ class ManageClient
 		$uri = '/' . Conf::MEDIA_ENCODE_VERSION . '/mediaEncodeResult/' . $taskId;
 		return $this->_send_request('GET', $uri);
 	}
-	/**视频截图接口
+
+	/**
+	 * 视频截图接口
 	 * @param MediaResOption $snapshotOption 截图参数选项
 	 * @return array
 	 */
@@ -254,7 +280,9 @@ class ManageClient
 		}
 		return $this->_send_request('POST', $uri, $httpBody);
 	}
-	/**视频截图结果查询接口
+
+	/**
+	 * 视频截图结果查询接口
 	 * @param string $taskId 转码任务ID
 	 */
 	public function vSnapshotQuery($taskId)
@@ -264,7 +292,9 @@ class ManageClient
 		$uri = '/' . Conf::MANAGE_API_VERSION . '/snapshotResult/' . $taskId;
 		return $this->_send_request('GET', $uri);
 	}
+
 	/**
+	 *
 	 * 广告图扫描接口(beta)
 	 * @param ManageOption $resInfos 待扫描图片资源
 	 * @return array
@@ -279,7 +309,9 @@ class ManageClient
 		$httpBody = $this->createHttpBody($bodyArray); //http body字符串信息
 		return $this->_send_request('POST', $uri, $httpBody);
 	}
-	/**调用curl利用http上传数据
+
+	/**
+	 * 调用curl利用http上传数据
 	 * @param string $method
 	 * @param string $uri
 	 * @param array $bodyArray
@@ -349,7 +381,10 @@ class ManageClient
 		$result['isSuccess'] = $success;
 		return $result;
 	}
-	/**根据$bodyArray构建http请求体。多个字段之间用&号分割*/
+
+	/**
+	 * 根据$bodyArray构建http请求体。多个字段之间用&号分割
+	 */
 	protected function createHttpBody($bodyArray)
 	{
 		$bodyStr = '';
@@ -359,7 +394,10 @@ class ManageClient
 		}
 		return $bodyStr;
 	}
-	/**UserAgent用户代理 */
+
+	/**
+	 * UserAgent用户代理
+	 */
 	protected function _getUserAgent()
 	{
 		if ($this->type == "TOP") {
@@ -368,7 +406,10 @@ class ManageClient
 			return "ALIMEDIASDK_PHP_CLOUD/" . Conf::SDK_VERSION;
 		}
 	}
-	/**根据管理接口uri拼接成完整的URL*/
+
+	/**
+	 * 根据管理接口uri拼接成完整的URL
+	 */
 	protected function _get_manage_url($uri)
 	{
 		return Conf::MANAGE_HOST_MEDIA . $uri;
@@ -381,7 +422,10 @@ class ManageClient
 			return "bucketName";
 		}
 	}
-	/**获取管理鉴权信息*/
+
+	/**
+	 * 获取管理鉴权信息
+	 */
 	protected function _getAuthorization($uri, $date, $httpBody)
 	{
 		$stringBeforeSign = "{$uri}\n{$httpBody}\n{$date}"; //1.生成待加签的原始字符串
@@ -391,7 +435,10 @@ class ManageClient
 		$manageToken = "ACL_" . $this->type . " " . $encodedStr; //5.最后为编码结果加上得到管理凭证
 		return $manageToken;
 	}
-	/**得到当前时间的毫秒数*/
+
+	/**
+	 * 得到当前时间的毫秒数
+	 */
 	protected function currentMilliSecond()
 	{
 		list($microSec, $stampSec) = explode(' ', microtime());
@@ -399,7 +446,10 @@ class ManageClient
 		$currentMilli = $stampSec . $tempMilli;
 		return $currentMilli;
 	}
-	/**反馈错误信息*/
+
+	/**
+	 * 反馈错误信息
+	 */
 	protected function _errorResponse($code = "UnknownError", $message = "unkonown error", $requestId = null)
 	{
 		return array(

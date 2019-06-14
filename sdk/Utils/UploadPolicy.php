@@ -27,6 +27,10 @@ class UploadPolicy
 
     public function __construct($option)
     {
+        if (!isset($option['expiration']) || !$option['expiration']) {
+            $option['expiration'] = -1;
+        }
+
         foreach ($option as $attribute => $value) {
             $this->{$attribute} = $value;
         }

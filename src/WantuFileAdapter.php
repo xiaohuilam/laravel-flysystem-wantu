@@ -8,6 +8,7 @@ use AliMedia\Utils\UploadPolicy;
 use League\Flysystem\Config;
 use Illuminate\Support\Str;
 use AliMedia\Conf\Conf;
+use Carbon\Carbon;
 
 class WantuFileAdapter extends AbstractAdapter
 {
@@ -419,15 +420,22 @@ class WantuFileAdapter extends AbstractAdapter
      * Get the upload token.
      *
      * @param string|null $key
-     * @param int         $expires
+     * @param int         $ttl
      * @param string|null $policy
      * @param string|null $strictPolice
      *
      * @return string
      */
-    public function getUploadToken($key = null, $expires = 3600, $policy = null, $strictPolice = null)
+    public function getUploadToken($option = null)
     {
-        return $this->client->getUploadToken($key, $expires, $policy, Conf::INSERT_ONLY_TRUE);
+        if ($option === null) {
+            $option = ['name' => null, 'ttl' => 3600, ];
+        }
+
+        return $this->client->getUploadToken(collect([
+            'expiration' => Carbon::now()->addSeconds($option['ttl'])->timestamp * 1000,
+            'insertOnly' => Conf::INSERT_ONLY_TRUE
+        ])->merge(collect($option)->except(['ttl',])));
     }
 
     /**

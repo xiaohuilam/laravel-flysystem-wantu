@@ -10,8 +10,8 @@ class UploadToken extends AbstractPlugin
         return 'getUploadToken';
     }
 
-    public function handle($key = null, $expires = 3600, $policy = null, $strictPolice = null)
+    public function handle($option = null)
     {
-        return $this->filesystem->getAdapter()->getUploadToken($key, $expires, $policy, $strictPolice);
+        return $this->filesystem->getAdapter()->getUploadToken($option);
     }
 }

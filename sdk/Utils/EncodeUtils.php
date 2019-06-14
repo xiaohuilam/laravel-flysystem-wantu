@@ -18,6 +18,7 @@ class EncodeUtils
 		$result = str_replace(array('+', '/', '='), array('-', '_', ''), $result);
 		return $result;
 	}
+
 	public static function new_encodeWithURLSafeBase64($arg)
 	{
 		if ($arg === null || empty($arg)) {

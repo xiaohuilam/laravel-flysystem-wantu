@@ -4,7 +4,7 @@ namespace AliMedia\Utils;
 /**管理时的选项*/
 final class ManageOption extends ResourceInfo
 {
-	/* 以下属性是”获取资源列表"方法所需的属性。即listFiles()、listDirs()方法中的参数 */
+	/*以下属性是”获取资源列表"方法所需的属性。即listFiles()、listDirs()方法中的参数 */
 	private $currentPage;                            //当前页号
 	private $pageSize;                               //每页的大小
 	/* 以下属性是"扫描黄图和广告图"方法所需的属性。即scanPorn()和scanAdvertising方法中的参数 */
@@ -21,13 +21,19 @@ final class ManageOption extends ResourceInfo
 		$this->currentPage = 1;
 		$this->pageSize = 10;
 	}
-	/**生成文件列表listFiles()方法所需的参数*/
+
+	/**
+	 * 生成文件列表listFiles()方法所需的参数
+	 */
 	public function buildListFilesParas()
 	{
 		return "namespace=" . $this->namespace . "&dir=" . urlencode($this->dir) .
 			"&currentPage=" . $this->currentPage . "&pageSize=" . $this->pageSize;
 	}
-	/**校验待检测资源信息是否合法。如果合法，则返回http请求体<p> 返回格式{$isValid, $message, $bodyArray}*/
+
+	/**
+	 * 校验待检测资源信息是否合法。如果合法，则返回http请求体<p> 返回格式{$isValid, $message, $bodyArray}
+	 */
 	public function checkFilesAndUrls()
 	{
 		if (empty($this->filesArray) && empty($this->urlsArray)) {
@@ -61,7 +67,10 @@ final class ManageOption extends ResourceInfo
 		}
 		return array(true, 'valid', $bodyArray);
 	}
-	/**生成扫描黄图scanPorn()方法所需的参数*/
+
+	/**
+	 * 生成扫描黄图scanPorn()方法所需的参数
+	 */
 	public function buildScanPornParas()
 	{
 		$bodyArray = array();
@@ -82,12 +91,18 @@ final class ManageOption extends ResourceInfo
 		}
 		return $bodyArray;
 	}
-	/**生成扫描广告图scanAdvertising()方法所需的参数*/
+
+	/**
+	 * 生成扫描广告图scanAdvertising()方法所需的参数
+	 */
 	public function buildScanAdvertisingParas()
 	{
 		return $this->buildScanPornParas();
 	}
-	/**校验鉴黄反馈信息是否合法。如果合法，则返回http请求体<p> 返回格式{$isValid, $message, $httpBody}*/
+
+	/**
+	 * 校验鉴黄反馈信息是否合法。如果合法，则返回http请求体<p> 返回格式{$isValid, $message, $httpBody}
+	 */
 	public function checkPornFeedbackInfos()
 	{
 		$httpBody = '';
@@ -122,13 +137,19 @@ final class ManageOption extends ResourceInfo
 		$this->currentPage = $currentPage;
 		return $this;
 	}
-	/**设置每页的大小 */
+
+	/**
+	 * 设置每页的大小
+	 */
 	public function setPageSize($pageSize)
 	{
 		$this->pageSize = $pageSize;
 		return $this;
 	}
-	/**添加待扫描文件信息。*/
+
+	/**
+	 * 添加待扫描文件信息。
+	 */
 	public function addResource($namespace = null, $dir = null, $name = null)
 	{
 		if (!isset($this->filesArray)) {
@@ -136,7 +157,10 @@ final class ManageOption extends ResourceInfo
 		}
 		array_push($this->filesArray, new ResourceInfo($namespace, $dir, $name));
 	}
-	/**添加待扫描URL信息。*/
+
+	/**
+	 * 添加待扫描URL信息。
+	 */
 	public function addUrl($url)
 	{
 		if (!isset($this->urlsArray)) {
@@ -144,7 +168,9 @@ final class ManageOption extends ResourceInfo
 		}
 		array_push($this->urlsArray, $url);
 	}
-	/**添加鉴黄反馈信息。
+
+	/**
+	 * 添加鉴黄反馈信息。
 	 * @param string $namespace 空间名[必须]。
 	 * @param string $dir 路径。为空则默认根目录
 	 * @param string $name 文件名。不能为空

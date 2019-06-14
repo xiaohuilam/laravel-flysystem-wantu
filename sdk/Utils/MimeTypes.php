@@ -131,6 +131,7 @@ class MimeTypes
 		"wma" => "audio/x-ms-wma",
 		"lrc" => "application/lrc"
 	);
+
 	public static function get_mimetype($ext)
 	{
 		$ext = strtolower($ext);

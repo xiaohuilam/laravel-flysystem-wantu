@@ -39,23 +39,18 @@ class AlibabaImage
 		$this->manage_client = new ManageClient($ak, $sk, $type);
 	}
 
-	public function getUploadToken($key = null, $expires = 3600, $policy = null, $insertOnly = 0)
+	public function getUploadToken($option)
 	{
-		if (!$key) {
-			$key = '${uuid}.${ext}';
+		if (!isset($option['name']) || !$option['name']) {
+			$option['name'] = '${uuid}.${ext}';
 		}
-		if ($key) {
-			$dir = preg_replace('/^\./', '', dirname($key));
-			$key = last(explode("/", $key));
+		if ($option['name']) {
+			$option['dir'] = preg_replace('/^\./', '', dirname($option['name']));
+			$option['name'] = last(explode("/", $option['name']));
 		}
+		$option['namespace'] = $this->namespace;
 
-		$policy = new UploadPolicy([
-			'namespace' => $this->namespace,
-			'dir' => $dir,
-			'name' => $key,
-			'expiration' => $expires,
-			'insertOnly' => $insertOnly,
-		]);
+		$policy = new UploadPolicy($option);
 
 		return $this->upload_client->getUploadToken($policy);
 	}

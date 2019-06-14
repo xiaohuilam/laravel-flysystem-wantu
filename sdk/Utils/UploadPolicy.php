@@ -26,12 +26,12 @@ class UploadPolicy
     public $mediaEncode;                            // 上传音视频时，可以指定转码策略[media encode policy after upload task has been completed. it's json string]
 
     /**UploadPolicy的构造函数，必须设置空间名namespace才能创建对象*/
-    public function __construct($namespace, $dir = null, $name = null, $detectMime = null, $expiration = null)
+    public function __construct($namespace, $dir = null, $name = null, $detectMime = null, $expiration = null, $insertOnly = Conf::INSERT_ONLY_NONE)
     {
         $this->namespace = $namespace;
         $this->dir = $dir;
         $this->name = $name;
-        $this->insertOnly = Conf::INSERT_ONLY_NONE;
+        $this->insertOnly = $insertOnly;
         $this->expiration = -1;
         $this->detectMime = Conf::DETECT_MIME_TRUE;
     }

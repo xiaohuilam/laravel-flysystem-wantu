@@ -7,6 +7,7 @@ use AliMedia\AlibabaImage as Client;
 use AliMedia\Utils\UploadPolicy;
 use League\Flysystem\Config;
 use Illuminate\Support\Str;
+use AliMedia\Conf\Conf;
 
 class WantuFileAdapter extends AbstractAdapter
 {
@@ -384,6 +385,7 @@ class WantuFileAdapter extends AbstractAdapter
     {
         return $this->authManager ?: $this->authManager = new Auth($this->accessKey, $this->secretKey);
     }
+
     /**
      * @return \Qiniu\Storage\UploadManager
      */
@@ -391,6 +393,7 @@ class WantuFileAdapter extends AbstractAdapter
     {
         return $this->uploadManager ?: $this->uploadManager = new UploadManager();
     }
+
     /**
      * @return \Qiniu\Cdn\CdnManager
      */
@@ -398,6 +401,7 @@ class WantuFileAdapter extends AbstractAdapter
     {
         return $this->cdnManager ?: $this->cdnManager = new CdnManager($this->getAuthManager());
     }
+
     /**
      * @return string
      */
@@ -405,6 +409,7 @@ class WantuFileAdapter extends AbstractAdapter
     {
         return $this->bucket;
     }
+
     /**
      * Get the upload token.
      *
@@ -417,8 +422,9 @@ class WantuFileAdapter extends AbstractAdapter
      */
     public function getUploadToken($key = null, $expires = 3600, $policy = null, $strictPolice = null)
     {
-        return $this->client->getUploadToken($key, $expires, $policy, $strictPolice);
+        return $this->client->getUploadToken($key, $expires, $policy, Conf::INSERT_ONLY_TRUE);
     }
+
     /**
      * @param array $stats
      *

@@ -39,7 +39,7 @@ class AlibabaImage
 		$this->manage_client = new ManageClient($ak, $sk, $type);
 	}
 
-	public function getUploadToken($key = null, $expires = 3600, $policy = null, $strictPolice = null)
+	public function getUploadToken($key = null, $expires = 3600, $policy = null, $insertOnly = 0)
 	{
 		if (!$key) {
 			$key = '${uuid}.${ext}';
@@ -49,7 +49,7 @@ class AlibabaImage
 			$key = last(explode("/", $key));
 		}
 
-		$policy = new UploadPolicy($this->namespace, $dir, $key, null, $expires);
+		$policy = new UploadPolicy($this->namespace, $dir, $key, null, $expires, $insertOnly);
 
 		return $this->upload_client->getUploadToken($policy);
 	}

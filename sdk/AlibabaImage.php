@@ -2,13 +2,13 @@
 namespace AliMedia;
 
 use AliMedia\Conf\Conf;
-use AliMedia\Utils\UploadPolicy;
+use AliMedia\Core\ManageClient;
+use AliMedia\Core\UploadClient;
+use AliMedia\Utils\ManageOption;
 use AliMedia\Utils\UploadOption;
+use AliMedia\Utils\UploadPolicy;
 use AliMedia\Utils\SnapShotOption;
 use AliMedia\Utils\MediaEncodeOption;
-use AliMedia\Utils\ManageOption;
-use AliMedia\Core\UploadClient;
-use AliMedia\Core\ManageClient;
 
 class AlibabaImage
 {
@@ -27,7 +27,7 @@ class AlibabaImage
 	 * @param string $ak 云存储公钥
 	 * @param string $sk 云存储私钥
 	 * @param string $type 可选，兼容TOP与tea云的 ak/sk
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function __construct($ak, $sk, $namespace, $type = Conf::TYPE_TOP)
 	{
@@ -49,7 +49,13 @@ class AlibabaImage
 			$key = last(explode("/", $key));
 		}
 
-		$policy = new UploadPolicy($this->namespace, $dir, $key, null, $expires, $insertOnly);
+		$policy = new UploadPolicy([
+			'namespace' => $this->namespace,
+			'dir' => $dir,
+			'name' => $key,
+			'expiration' => $expires,
+			'insertOnly' => $insertOnly,
+		]);
 
 		return $this->upload_client->getUploadToken($policy);
 	}
@@ -69,9 +75,7 @@ class AlibabaImage
 	{
 		return $this->upload_client->uploadData($data, $uploadPolicy, $uploadOption);
 	}
-	/*######################################华丽的分界线#######################################*/
-	/*####################上面是上传文件的接口(自动分片)，下面是分片上传接口#####################*/
-	/*#########################################################################################*/
+
 	/**
 	 * 创建分片上传任务，指定待上传的文件。即初始化分片上传
 	 */
@@ -119,9 +123,7 @@ class AlibabaImage
 	{
 		return $this->upload_client->multipartCancel($uploadPolicy, $uploadOption);
 	}
-	/*######################################华丽的分界线#######################################*/
-	/*########################上面是分片上传的接口，下面是文件管理接口##########################*/
-	/*########################################################################################*/
+
 	/**
 	 * 查看文件是否存在
 	 */
@@ -193,9 +195,7 @@ class AlibabaImage
 	{
 		return $this->manage_client->deleteDir($namespace, $dir);
 	}
-	/*######################################华丽的分界线#######################################*/
-	/*#######################上面是文件或文件夹的管理，下面是特色服务接口########################*/
-	/*########################################################################################*/
+
 	/**
 	 * 黄图扫描接口
 	 */
@@ -203,6 +203,7 @@ class AlibabaImage
 	{
 		return $this->manage_client->scanPorn($resInfos);
 	}
+
 	/**
 	 * 鉴黄反馈feedback接口
 	 */
@@ -210,6 +211,7 @@ class AlibabaImage
 	{
 		return $this->manage_client->pornFeedback($pornFbInfos);
 	}
+
 	/**
 	 * 多媒体转码接口
 	 */
@@ -217,6 +219,7 @@ class AlibabaImage
 	{
 		return $this->manage_client->mediaEncode($encodeOption);
 	}
+
 	/**
 	 * 多媒体转码任务查询接口
 	 */
@@ -224,6 +227,7 @@ class AlibabaImage
 	{
 		return $this->manage_client->mediaEncodeQuery($taskId);
 	}
+
 	/**
 	 * 视频截图接口
 	 */
@@ -231,6 +235,7 @@ class AlibabaImage
 	{
 		return $this->manage_client->videoSnapshot($snapshotOption);
 	}
+
 	/**
 	 * 视频截图结果查询接口
 	 */
@@ -238,6 +243,7 @@ class AlibabaImage
 	{
 		return $this->manage_client->vSnapshotQuery($taskId);
 	}
+
 	/**
 	 * 广告图扫描接口(beta)
 	 */

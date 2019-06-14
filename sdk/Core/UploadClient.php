@@ -2,14 +2,11 @@
 namespace AliMedia\Core;
 
 use AliMedia\Conf\Conf;
-use AliMedia\Utils\UploadPolicy;
-use AliMedia\Utils\UploadOption;
-use AliMedia\Utils\UpOptionType;
 use AliMedia\Utils\EncodeUtils;
-
-if (!defined('ALI_IMAGE_SDK_PATH')) {
-	define('ALI_IMAGE_SDK_PATH', dirname(__FILE__));
-}
+use AliMedia\Utils\UploadOption;
+use AliMedia\Utils\UploadPolicy;
+use AliMedia\Utils\UpOptionType;
+use XiaohuiLam\LaravelFilesystem\Wantu\UploadException;
 
 class UploadClient
 {
@@ -17,6 +14,7 @@ class UploadClient
 	private $ak;
 	private $sk;
 	private $type; // "CLOUD" or "TOP";
+
 	public function __construct($ak, $sk, $type = Conf::TYPE_TOP)
 	{
 		$this->ak = $ak;
@@ -24,13 +22,12 @@ class UploadClient
 		$this->type = $type;
 		$this->upload_host = Conf::UPLOAD_HOST_MEDIA;
 	}
-	/**上传文件。根据文件大小判断是否进行分片
-	 * @param string $filePath
-	 *        	文件路径
-	 * @param UploadPolicy $uploadPolicy
-	 *        	上传策略
-	 * @param UploadOption $uploadOption
-	 *        	上传选项
+
+	/**
+	 * 上传文件。根据文件大小判断是否进行分片
+	 * @param string $filePath 	文件路径
+	 * @param UploadPolicy $uploadPolicy 	上传策略
+	 * @param UploadOption $uploadOption 	上传选项
 	 * @return array
 	 */
 	public function upload($filePath, UploadPolicy $uploadPolicy, UploadOption $uploadOption = null)
@@ -58,7 +55,9 @@ class UploadClient
 		// 文件不大于设定的分片大小(默认2M)，则直接上传uploadMiniFile()
 		return $this->uploadMiniFile($encodePath, $uploadPolicy, $uploadOption);
 	}
-	/**上传小文件
+
+	/**
+	 * 上传小文件
 	 * @param string $filePath 文件路径
 	 * @param UploadPolicy $uploadPolicy 上传策略
 	 * @param UploadOption $uploadOption 上传选项
@@ -71,7 +70,9 @@ class UploadClient
 		$url = $this->upload_host . Conf::UPLOAD_API_UPLOAD;		//普通上传的API
 		return $this->_send_request('POST', $url, $uploadPolicy, $uploadOption);
 	}
-	/**分片上传大文件
+
+	/**
+	 * 分片上传大文件
 	 * @param string $filePath 文件路径
 	 * @param UploadPolicy $uploadPolicy 上传策略
 	 * @param UploadOption $uploadOption 上传选项
@@ -129,6 +130,7 @@ class UploadClient
 		$uploadOption->setMd5(md5_file($filePath));							//文件Md5
 		return $this->_send_request('POST', $url, $uploadPolicy, $uploadOption);
 	}
+
 	/**上传字符串/二进制数据
 	 * @param string $data
 	 *        	文件数据
@@ -158,7 +160,9 @@ class UploadClient
 		$url = $this->upload_host . Conf::UPLOAD_API_UPLOAD;		//普通上传的API
 		return $this->_send_request('POST', $url, $uploadPolicy, $uploadOption);
 	}
-	/**分片上传大文件数据
+
+	/**
+	 * 分片上传大文件数据
 	 * @param string $data 文件数据
 	 * @param UploadPolicy $uploadPolicy 上传策略
 	 * @param UploadOption $uploadOption 上传选项
@@ -212,7 +216,9 @@ class UploadClient
 		$uploadOption->setMd5(md5($data));							//文件Md5
 		return $this->_send_request('POST', $url, $uploadPolicy, $uploadOption);
 	}
-	/**创建分片上传任务，指定待上传的文件。即初始化分片上传
+
+	/**
+	 * 创建分片上传任务，指定待上传的文件。即初始化分片上传
 	 * @param string $filePath 文件路径
 	 * @param UploadPolicy $uploadPolicy 上传策略
 	 * @param UploadOption $uploadOption 上传选项
@@ -233,7 +239,9 @@ class UploadClient
 		$blockData = file_get_contents($encodePath, 0, null, 0, $uploadOption->blockSize);
 		return $this->multipartInitByData($blockData, $uploadPolicy, $uploadOption);
 	}
-	/**创建分片上传任务，指定初始化分片任务的数据，即第一块数据
+
+	/**
+	 * 创建分片上传任务，指定初始化分片任务的数据，即第一块数据
 	 * @param string $blockData 文件数据
 	 * @param UploadPolicy $uploadPolicy 上传策略
 	 * @param UploadOption $uploadOption 上传选项
@@ -268,6 +276,7 @@ class UploadClient
 		}
 		return $httpRes;
 	}
+
 	/**分片上传，指定待上传的文件。需要指定UploadOption中文件块编号
 	 * @param string $filePath 文件路径
 	 * @param UploadPolicy $uploadPolicy 上传策略
@@ -291,7 +300,9 @@ class UploadClient
 		$blockData = file_get_contents($encodePath, 0, null, $offset, $currentSize);
 		return $this->multipartUploadByData($blockData, $uploadPolicy, $uploadOption);
 	}
-	/**分片上传，指定待上传的数据。需要指定UploadOption中文件块编号
+
+	/**
+	 * 分片上传，指定待上传的数据。需要指定UploadOption中文件块编号
 	 * @param string $filePath 文件路径
 	 * @param UploadPolicy $uploadPolicy 上传策略
 	 * @param UploadOption $uploadOption 上传选项
@@ -313,7 +324,9 @@ class UploadClient
 		}
 		return $httpRes;
 	}
-	/**完成分片上传任务。需要指定UploadOption中整个文件的md5值
+
+	/**
+	 * 完成分片上传任务。需要指定UploadOption中整个文件的md5值
 	 * @param UploadPolicy $uploadPolicy 上传策略
 	 * @param UploadOption $uploadOption 上传选项
 	 * @return array 分片上传完成的结果
@@ -328,7 +341,9 @@ class UploadClient
 		$uploadOption->optionType = UpOptionType::BLOCK_COMPLETE_UPLOAD;		//完成分片上传任务时的Option类型
 		return $this->_send_request('POST', $url, $uploadPolicy, $uploadOption);
 	}
-	/**取消分片上传任务。需要保证UploadOption中有分片任务的uploadId和id
+
+	/**
+	 * 取消分片上传任务。需要保证UploadOption中有分片任务的uploadId和id
 	 * @param UploadPolicy $uploadPolicy 上传策略
 	 * @param UploadOption $uploadOption 上传选项
 	 * @return array 分片上传完成的结果
@@ -342,7 +357,9 @@ class UploadClient
 		$uploadOption->optionType = UpOptionType::BLOCK_CANCEL_UPLOAD;	//取消分片任务时的Option类型
 		return $this->_send_request('POST', $url, $uploadPolicy, $uploadOption);
 	}
-	/**调用curl利用http上传数据
+
+	/**
+	 * 调用curl利用http上传数据
 	 * @param string $method
 	 * @param string $url
 	 * @param UploadPolicy $uploadPolicy
@@ -405,11 +422,17 @@ class UploadClient
 		} catch (Exception $e) {
 			$result = $this->_errorResponse("HTTPRequestException#" . $e->getLine(), $e->getMessage());
 		}
+
 		curl_close($ch); //PHP5.3中不支持finally关键字。因此，为了兼容，这里取消finally
+		if (!$success) {
+			throw new UploadException($result['message'], $http_code);
+		}
 		$result['isSuccess'] = $success;
 		return $result;
 	}
-	/**uploadPolicy和uploadOption 合法性检查
+
+	/**
+	 * uploadPolicy和uploadOption 合法性检查
 	 * @param UploadPolicy $uploadPolicy 上传策略
 	 * @param UploadOption $uploadOption 上传选项
 	 * @return array($isValid, $message)
@@ -449,7 +472,9 @@ class UploadClient
 		}
 		return array($isValid, $message);
 	}
-	/**构建Http请求的Body
+
+	/**
+	 * 构建Http请求的Body
 	 * @param UploadOption $uploadOption
 	 * @return array (contentType,httpBody)
 	 */
@@ -486,7 +511,10 @@ class UploadClient
 			$httpBody
 		);
 	}
-	/**UserAgent用户代理 */
+
+	/**
+	 * UserAgent用户代理
+	 */
 	protected function _getUserAgent()
 	{
 		if ($this->type == "TOP") {
@@ -501,19 +529,24 @@ class UploadClient
 		return $this->_getUploadToken($uploadPolicy);
 	}
 
-	/**生成上传凭证
+	/**
+	 * 生成上传凭证
 	 * @param UploadPolicy $uploadPolicy
 	 * @return string 上传时的凭证token
 	 */
 	protected function _getUploadToken(UploadPolicy $uploadPolicy)
 	{
-		$encodedPolicy = EncodeUtils::encodeWithURLSafeBase64(json_encode($uploadPolicy));
+		$encodedPolicy = EncodeUtils::encodeWithURLSafeBase64(json_encode($uploadPolicy->toArray()));
 		$signed = hash_hmac('sha1', $encodedPolicy, $this->sk);
 		$tempStr = $this->ak . ":" . $encodedPolicy . ":" . $signed;
 		$token = "UPLOAD_AK_" . $this->type . " " . EncodeUtils::encodeWithURLSafeBase64($tempStr);
+
 		return $token;
 	}
-	/**反馈错误信息*/
+
+	/**
+	 * 反馈错误信息
+	 */
 	protected function _errorResponse($code = "UnknownError", $message = "unkonown error", $requestId = null)
 	{
 		return array(
@@ -523,7 +556,9 @@ class UploadClient
 			"requestId" => $requestId
 		);
 	}
-	/**记录curl错误日志
+
+	/**
+	 * 记录curl错误日志
 	 * @param curl-handle $ch curl句柄
 	 */
 	protected function recordCurlErrorLog($ch)
@@ -533,11 +568,13 @@ class UploadClient
 			$info  = curl_getinfo($ch); //curl连接资源句柄的信息
 			$info['errno'] = $errno; //添加到连接句柄信息中
 			$content = date("Y-m-d H:i:s") . json_encode($info) . "\n";
-			$logPath = ALI_IMAGE_SDK_PATH . "/" . Conf::CURL_ERR_LOG;
+			$logPath = dirname(__FILE__) . "/" . Conf::CURL_ERR_LOG;
 			$this->putContentToFile($content, $logPath);
 		}
 	}
-	/**将信息追加写到文件
+
+	/**
+	 * 将信息追加写到文件
 	 * @param string $message 日志内容。
 	 * @return void
 	 */

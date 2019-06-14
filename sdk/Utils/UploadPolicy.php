@@ -25,14 +25,22 @@ class UploadPolicy
     public $returnBody;                             // 上传完成返回体 [return body, magic vars and custom vars are supported]
     public $mediaEncode;                            // 上传音视频时，可以指定转码策略[media encode policy after upload task has been completed. it's json string]
 
-    /**UploadPolicy的构造函数，必须设置空间名namespace才能创建对象*/
-    public function __construct($namespace, $dir = null, $name = null, $detectMime = null, $expiration = null, $insertOnly = Conf::INSERT_ONLY_NONE)
+    public function __construct($option)
     {
-        $this->namespace = $namespace;
-        $this->dir = $dir;
-        $this->name = $name;
-        $this->insertOnly = $insertOnly;
-        $this->expiration = -1;
-        $this->detectMime = Conf::DETECT_MIME_TRUE;
+        foreach ($option as $attribute => $value) {
+            $this->{$attribute} = $value;
+        }
+    }
+
+    public function toArray()
+    {
+        $array = [];
+        foreach ($this as $attribute => $value) {
+            if ($value !== null) {
+                $array[$attribute] = $value;
+            }
+        }
+
+        return $array;
     }
 }

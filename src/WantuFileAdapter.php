@@ -430,6 +430,8 @@ class WantuFileAdapter extends AbstractAdapter
     {
         if ($option === null) {
             $option = ['name' => null, 'ttl' => 3600, ];
+        } else if (!isset($option['ttl']) || !$option['ttl']) {
+            $option['ttl'] = 3600;
         }
 
         return $this->client->getUploadToken(collect([

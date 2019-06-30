@@ -361,7 +361,6 @@ class ManageClient
 			//执行请求，然后获取服务端返回
 			$response = curl_exec($ch);
 			if ($response == false) {
-				$this->recordCurlErrorLog($ch); //记录最近一次curl执行错误日志
 				$result = $this->_errorResponse("curl error", "curl request failed");
 				$result['errno'] = curl_errno($ch); //错误码
 			} else {

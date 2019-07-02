@@ -371,6 +371,7 @@ class UploadClient
     protected function _send_request($method, $url, UploadPolicy $uploadPolicy, UploadOption $uploadOption)
     {
         $success = false;
+        $http_code = 0;
         $result = array();
         /**
          * @var resource $ch

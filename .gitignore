@@ -2,3 +2,4 @@ vendor/
 tests/
 composer.lock
 .DS_Store
+*.patch

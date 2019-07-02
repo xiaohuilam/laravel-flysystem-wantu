@@ -10,7 +10,7 @@ use XiaohuiLam\LaravelFilesystem\Wantu\Plugins\UploadToken;
 
 class WantuFileServiceProvider extends ServiceProvider
 {
-    public function boot()
+    public function register()
     {
         app('filesystem')->extend('wantu', function ($app, $config) {
             $adapter = new WantuFileAdapter(

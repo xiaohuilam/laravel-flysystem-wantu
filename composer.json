@@ -14,11 +14,27 @@
             "XiaohuiLam\\LaravelFilesystem\\Wantu\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "XiaohuiLam\\LaravelFilesystem\\Test\\": "tests/",
+            "Tests\\": "vendor/laravel/laravel/tests/"
+        },
+        "classmap": [
+            "vendor/laravel/laravel/tests/"
+        ]
+    },
     "minimum-stability": "stable",
     "require": {
         "xiaohuilam/wantu-sdk": ">=0.0.1",
-        "laravel/framework": "~5.0",
+        "laravel/framework": ">=5.0",
         "league/flysystem": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*",
+        "laravel/laravel": ">=5.0",
+        "squizlabs/php_codesniffer": "*",
+        "fzaninotto/faker": "*",
+        "mockery/mockery": "*"
     },
     "extra": {
         "laravel": {

@@ -380,7 +380,7 @@ class UploadClient
         try {
             //构建Http请求头和请求体
             $_headers = array('Expect:');
-            $token = $this->_getUploadToken($uploadPolicy);
+            $token = $this->getUploadToken($uploadPolicy);
             array_push($_headers, "Authorization: {$token}");
             array_push($_headers, "User-Agent: {$this->getUserAgent()}");
             $length = 0;

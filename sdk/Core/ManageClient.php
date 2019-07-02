@@ -335,7 +335,7 @@ class ManageClient
         $_headers = array('Expect:');
         $date = $this->currentMilliSecond(); //得到当前的时间戳，毫秒
         array_push($_headers, "Date: {$date}");
-        $authorization = $this->_getAuthorization($uri, $date, $httpBody);  //Http的Body需要加入管理鉴权
+        $authorization = $this->getAuthorization($uri, $date, $httpBody);  //Http的Body需要加入管理鉴权
         array_push($_headers, "Authorization: {$authorization}");
         array_push($_headers, "User-Agent: {$this->getUserAgent()}");
         if (!is_null($headers) && is_array($headers)) {

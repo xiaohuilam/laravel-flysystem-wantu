@@ -16,12 +16,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "XiaohuiLam\\LaravelFilesystem\\Test\\": "tests/",
-            "Tests\\": "vendor/laravel/laravel/tests/"
-        },
-        "classmap": [
-            "vendor/laravel/laravel/tests/"
-        ]
+            "XiaohuiLam\\LaravelFilesystem\\Test\\": "tests/"
+        }
     },
     "minimum-stability": "stable",
     "require": {
@@ -34,7 +30,8 @@
         "laravel/laravel": ">=5.0",
         "squizlabs/php_codesniffer": "*",
         "fzaninotto/faker": "*",
-        "mockery/mockery": "*"
+        "mockery/mockery": "*",
+        "xiaohuilam/laravel-test": ">=v0.0.1"
     },
     "extra": {
         "laravel": {

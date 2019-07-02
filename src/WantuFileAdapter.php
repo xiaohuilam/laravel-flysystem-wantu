@@ -335,14 +335,6 @@ class WantuFileAdapter extends AbstractAdapter
     }
 
     /**
-     * @return string
-     */
-    public function getBucket()
-    {
-        return $this->bucket;
-    }
-
-    /**
      * Get the upload token.
      *
      * @param string|null $key

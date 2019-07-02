@@ -60,7 +60,7 @@ class ResourceInfo
         return EncodeUtils::encodeWithURLSafeBase64(json_encode($jsonData, true));
     }
     /**对URL中文进行编码*/
-    protected function urlencode_ch($str)
+    protected function urlencodeCh($str)
     {
         return preg_replace_callback('/[^\0-\127]+/', function ($match) {
             return urlencode($match[0]);

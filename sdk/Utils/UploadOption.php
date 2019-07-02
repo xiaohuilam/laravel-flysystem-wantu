@@ -46,19 +46,19 @@ class UploadOption
         switch ($this->optionType) {
             case UpOptionType::COMMON_UPLOAD_TYPE:
             case UpOptionType::BLOCK_INIT_UPLOAD:
-                return $this->getParas_Common_BlockInit();
+                return $this->getParasCommonBlockInit();
             case UpOptionType::BLOCK_RUN_UPLOAD:
-                return $this->getParas_BlockRun();
+                return $this->getParasBlockRun();
             case UpOptionType::BLOCK_COMPLETE_UPLOAD:
-                return $this->getParas_BlockComplete();
+                return $this->getParasBlockComplete();
             case UpOptionType::BLOCK_CANCEL_UPLOAD:
-                return $this->getParas_BlockCancel();
+                return $this->getParasBlockCancel();
             default:
                 return null;
         }
     }
     /** 构造 普通上传 或者 初始化分片上传 所需的参数 */
-    private function getParas_Common_BlockInit()
+    private function getParasCommonBlockInit()
     {
         $paraArray = array();
         if (isset($this->dir)) {
@@ -75,7 +75,7 @@ class UploadOption
         return $paraArray;
     }
     /** 构造 分片上传过程中 所需的参数 */
-    private function getParas_BlockRun()
+    private function getParasBlockRun()
     {
         $paraArray = array();
         $paraArray['uploadId'] = $this->uploadId;
@@ -87,7 +87,7 @@ class UploadOption
         return $paraArray;
     }
     /** 构造 分片上传完成时 所需的参数 */
-    private function getParas_BlockComplete()
+    private function getParasBlockComplete()
     {
         $paraArray = array();
         $paraArray['uploadId'] = $this->uploadId;
@@ -98,7 +98,7 @@ class UploadOption
         return $paraArray;
     }
     /** 构造 分片上传取消 所需的参数 */
-    private function getParas_BlockCancel()
+    private function getParasBlockCancel()
     {
         return array('id' => $this->uniqueId, 'uploadId' => $this->uploadId);
     }
@@ -166,17 +166,4 @@ class UploadOption
     {
         return isset($this->uploadId) && isset($this->uniqueId);
     }
-}
-/**
- * 用于标识UploadOption对象的类型
- * @author yisheng.xp
- */
-class UpOptionType
-{
-    //下面的常量用于标识UploadOption对象适用的类型
-    const COMMON_UPLOAD_TYPE = 0;       //普通上传时的UploadOption类型
-    const BLOCK_INIT_UPLOAD = 1;        //分片初始化时的UploadOption类型
-    const BLOCK_RUN_UPLOAD = 2;         //分片上传过程中的UploadOption类型
-    const BLOCK_COMPLETE_UPLOAD = 3;    //分片上传完成时的UploadOption类型
-    const BLOCK_CANCEL_UPLOAD = 4;      //分片上传取消时的UploadOption类型
 }

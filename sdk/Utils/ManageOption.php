@@ -61,7 +61,7 @@ final class ManageOption extends ResourceInfo
                     return array(false, "url's info is invalid");
                 }
                 $resourceStr .= (empty($resourceStr) ? null : ';');
-                $resourceStr .= $this->urlencode_ch($url);
+                $resourceStr .= $this->urlencodeCh($url);
             }
             $bodyArray['url'] = $resourceStr;
         }

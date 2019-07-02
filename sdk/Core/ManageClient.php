@@ -34,11 +34,11 @@ class ManageClient
         $resourceInfo = new ResourceInfo($namespace, $dir, $filename);
         list($isValid, $message) = $resourceInfo->checkResourceInfo(true, true);
         if (!$isValid) {
-            return $this->_errorResponse("InvalidArgument", $message);
+            return $this->errorResponse("InvalidArgument", $message);
         }
         $resourceId = $resourceInfo->buildResourceId(); //得到资源ID
         $uri = '/' . Conf::MANAGE_API_VERSION . '/files/' . $resourceId . '/exist';
-        return $this->_send_request('GET', $uri);
+        return $this->sendRequest('GET', $uri);
     }
 
     /**
@@ -53,11 +53,11 @@ class ManageClient
         $resourceInfo = new ResourceInfo($namespace, $dir, $filename);
         list($isValid, $message) = $resourceInfo->checkResourceInfo(true, true);
         if (!$isValid) {
-            return $this->_errorResponse("InvalidArgument", $message);
+            return $this->errorResponse("InvalidArgument", $message);
         }
         $resourceId = $resourceInfo->buildResourceId(); //得到资源ID
         $uri = '/' . Conf::MANAGE_API_VERSION . '/files/' . $resourceId;
-        return $this->_send_request('GET', $uri);
+        return $this->sendRequest('GET', $uri);
     }
 
     /**
@@ -74,17 +74,17 @@ class ManageClient
         $resourceInfo = new ResourceInfo($namespace, $dir, $filename); //老的资源
         list($isValid, $message) = $resourceInfo->checkResourceInfo(true, true);
         if (!$isValid) {
-            return $this->_errorResponse("InvalidArgument", $message);
+            return $this->errorResponse("InvalidArgument", $message);
         }
         $newResourceInfo = new ResourceInfo($namespace, $newDir, $newName); //新的资源
         list($isValid, $message) = $newResourceInfo->checkResourceInfo(true, true);
         if (!$isValid) {
-            return $this->_errorResponse("InvalidArgument", $message);
+            return $this->errorResponse("InvalidArgument", $message);
         }
         $resourceId = $resourceInfo->buildResourceId(); //老资源ID
         $newResourceId = $newResourceInfo->buildResourceId(); //新资源ID
         $uri = '/' . Conf::MANAGE_API_VERSION . '/files/' . $resourceId . "/rename/" . $newResourceId;
-        return $this->_send_request('POST', $uri);
+        return $this->sendRequest('POST', $uri);
     }
 
     /**
@@ -104,11 +104,11 @@ class ManageClient
             $message = "Invalid parameters page or pageSize";
         }
         if (!$isValid) {
-            return $this->_errorResponse("InvalidArgument", $message);
+            return $this->errorResponse("InvalidArgument", $message);
         }
         $queryParas = $manageOption->buildListFilesParas(); //查询query参数
         $uri = '/' . Conf::MANAGE_API_VERSION . '/files?' . $queryParas;
-        return $this->_send_request('GET', $uri);
+        return $this->sendRequest('GET', $uri);
     }
 
     /**
@@ -123,11 +123,11 @@ class ManageClient
         $resourceInfo = new ResourceInfo($namespace, $dir, $filename);
         list($isValid, $message) = $resourceInfo->checkResourceInfo(true, true);
         if (!$isValid) {
-            return $this->_errorResponse("InvalidArgument", $message);
+            return $this->errorResponse("InvalidArgument", $message);
         }
         $resourceId = $resourceInfo->buildResourceId(); //得到资源ID
         $uri = '/' . Conf::MANAGE_API_VERSION . '/files/' . $resourceId;
-        return $this->_send_request('DELETE', $uri);
+        return $this->sendRequest('DELETE', $uri);
     }
 
     /**
@@ -139,7 +139,7 @@ class ManageClient
     public function existsFolder($namespace, $dir)
     {
         if (empty($namespace) || empty($dir)) {
-            return $this->_errorResponse("InvalidArgument", "namespace or dir is empty");
+            return $this->errorResponse("InvalidArgument", "namespace or dir is empty");
         }
         if (strpos($dir, '/') !== 0) {
             $dir = '/' . $dir;
@@ -147,7 +147,7 @@ class ManageClient
         $resourceInfo = new ResourceInfo($namespace, $dir);
         $resourceId = $resourceInfo->buildResourceId(); //得到资源ID
         $uri = '/' . Conf::MANAGE_API_VERSION . '/folders/' . $resourceId . '/exist';
-        return $this->_send_request('GET', $uri);
+        return $this->sendRequest('GET', $uri);
     }
 
     /**
@@ -159,7 +159,7 @@ class ManageClient
     public function createDir($namespace, $dir)
     {
         if (empty($namespace) || empty($dir)) {
-            return $this->_errorResponse("InvalidArgument", "namespace or dir is empty");
+            return $this->errorResponse("InvalidArgument", "namespace or dir is empty");
         }
         if (strpos($dir, '/') !== 0) {
             $dir = '/' . $dir;
@@ -167,7 +167,7 @@ class ManageClient
         $resourceInfo = new ResourceInfo($namespace, $dir);
         $resourceId = $resourceInfo->buildResourceId(); //得到资源ID
         $uri = '/' . Conf::MANAGE_API_VERSION . '/folders/' . $resourceId;
-        return $this->_send_request('POST', $uri);
+        return $this->sendRequest('POST', $uri);
     }
 
     /**
@@ -187,11 +187,11 @@ class ManageClient
             $message = "Invalid parameters page or pageSize";
         }
         if (!$isValid) {
-            return $this->_errorResponse("InvalidArgument", $message);
+            return $this->errorResponse("InvalidArgument", $message);
         }
         $queryParas = $manageOption->buildListFilesParas(); //查询query参数
         $uri = '/' . Conf::MANAGE_API_VERSION . '/folders?' . $queryParas;
-        return $this->_send_request('GET', $uri);
+        return $this->sendRequest('GET', $uri);
     }
 
     /**
@@ -203,7 +203,7 @@ class ManageClient
     public function deleteDir($namespace, $dir)
     {
         if (empty($namespace) || empty($dir)) {
-            return $this->_errorResponse("InvalidArgument", "namespace or dir is empty");
+            return $this->errorResponse("InvalidArgument", "namespace or dir is empty");
         }
         if (strpos($dir, '/') !== 0) {
             $dir = '/' . $dir;
@@ -211,7 +211,7 @@ class ManageClient
         $resourceInfo = new ResourceInfo($namespace, $dir);
         $resourceId = $resourceInfo->buildResourceId(); //得到资源ID
         $uri = '/' . Conf::MANAGE_API_VERSION . '/folders/' . $resourceId;
-        return $this->_send_request('DELETE', $uri);
+        return $this->sendRequest('DELETE', $uri);
     }
     /*######################################华丽的分界线#######################################*/
     /*#######################上面是文件或文件夹的管理，下面是特色服务接口########################*/
@@ -225,10 +225,10 @@ class ManageClient
         $uri = '/' . Conf::SCAN_PORN_VERSION . '/scanPorn';
         list($isValid, $message, $bodyArray) = $resInfos->checkFilesAndUrls(); //检测并得到黄图扫描所需参数
         if (!$isValid) {
-            return $this->_errorResponse("InvalidArgument", $message);
+            return $this->errorResponse("InvalidArgument", $message);
         }
         $httpBody = $this->createHttpBody($bodyArray); //http body字符串信息
-        return $this->_send_request('POST', $uri, $httpBody);
+        return $this->sendRequest('POST', $uri, $httpBody);
     }
 
     /**
@@ -241,9 +241,9 @@ class ManageClient
         $uri = '/' . Conf::SCAN_PORN_VERSION . '/feedback';
         list($isValid, $message, $httpBody) = $pornFbInfos->checkPornFeedbackInfos();
         if (!$isValid) {
-            return $this->_errorResponse("InvalidArgument", $message);
+            return $this->errorResponse("InvalidArgument", $message);
         }
-        return $this->_send_request('POST', $uri, $httpBody);
+        return $this->sendRequest('POST', $uri, $httpBody);
     }
 
     /**
@@ -256,9 +256,9 @@ class ManageClient
         $uri = '/' . Conf::MEDIA_ENCODE_VERSION . '/mediaEncode';
         list($isValid, $message, $httpBody) = $encodeOption->checkOptionParameters();
         if (!$isValid) {
-            return $this->_errorResponse("InvalidArgument", $message);
+            return $this->errorResponse("InvalidArgument", $message);
         }
-        return $this->_send_request('POST', $uri, $httpBody);
+        return $this->sendRequest('POST', $uri, $httpBody);
     }
 
     /**
@@ -268,10 +268,10 @@ class ManageClient
     public function mediaEncodeQuery($taskId)
     {
         if (empty($taskId)) {
-            return $this->_errorResponse("InvalidArgument", "taskId is empty");
+            return $this->errorResponse("InvalidArgument", "taskId is empty");
         }
         $uri = '/' . Conf::MEDIA_ENCODE_VERSION . '/mediaEncodeResult/' . $taskId;
-        return $this->_send_request('GET', $uri);
+        return $this->sendRequest('GET', $uri);
     }
 
     /**
@@ -284,9 +284,9 @@ class ManageClient
         $uri = '/' . Conf::MANAGE_API_VERSION . '/snapshot';
         list($isValid, $message, $httpBody) = $snapshotOption->checkOptionParameters();
         if (!$isValid) {
-            return $this->_errorResponse("InvalidArgument", $message);
+            return $this->errorResponse("InvalidArgument", $message);
         }
-        return $this->_send_request('POST', $uri, $httpBody);
+        return $this->sendRequest('POST', $uri, $httpBody);
     }
 
     /**
@@ -296,10 +296,10 @@ class ManageClient
     public function vSnapshotQuery($taskId)
     {
         if (empty($taskId)) {
-            return $this->_errorResponse("InvalidArgument", "taskId is empty");
+            return $this->errorResponse("InvalidArgument", "taskId is empty");
         }
         $uri = '/' . Conf::MANAGE_API_VERSION . '/snapshotResult/' . $taskId;
-        return $this->_send_request('GET', $uri);
+        return $this->sendRequest('GET', $uri);
     }
 
     /**
@@ -313,10 +313,10 @@ class ManageClient
         $uri = '/3.1/scanAdvertising';
         list($isValid, $message, $bodyArray) = $resInfos->checkFilesAndUrls(); //检测并得到广告图图扫描所需参数
         if (!$isValid) {
-            return $this->_errorResponse("InvalidArgument", $message);
+            return $this->errorResponse("InvalidArgument", $message);
         }
         $httpBody = $this->createHttpBody($bodyArray); //http body字符串信息
-        return $this->_send_request('POST', $uri, $httpBody);
+        return $this->sendRequest('POST', $uri, $httpBody);
     }
 
     /**
@@ -327,7 +327,7 @@ class ManageClient
      * @param array $headers
      * @return array (isSuccess, ...)
      */
-    protected function _send_request($method, $uri, $httpBody = null, $headers = null)
+    protected function sendRequest($method, $uri, $httpBody = null, $headers = null)
     {
         $success = false;
         $result = null;
@@ -337,13 +337,13 @@ class ManageClient
         array_push($_headers, "Date: {$date}");
         $authorization = $this->_getAuthorization($uri, $date, $httpBody);  //Http的Body需要加入管理鉴权
         array_push($_headers, "Authorization: {$authorization}");
-        array_push($_headers, "User-Agent: {$this->_getUserAgent()}");
+        array_push($_headers, "User-Agent: {$this->getUserAgent()}");
         if (!is_null($headers) && is_array($headers)) {
             foreach ($headers as $k => $v) {
                 array_push($_headers, "{$k}: {$v}");
             }
         }
-        $url = $this->_get_manage_url($uri); //根据管理接口uri拼接成URL
+        $url = $this->getManageUrl($uri); //根据管理接口uri拼接成URL
         $ch = curl_init($url);
         try {
             //构建http请求体，并设置header部分属性
@@ -370,7 +370,7 @@ class ManageClient
             //执行请求，然后获取服务端返回
             $response = curl_exec($ch);
             if ($response == false) {
-                $result = $this->_errorResponse("curl error", "curl request failed");
+                $result = $this->errorResponse("curl error", "curl request failed");
                 $result['errno'] = curl_errno($ch); //错误码
             } else {
                 //解析返回结果，并判断是否上传成功
@@ -383,7 +383,7 @@ class ManageClient
             }
         } catch (Exception $e) {
             $success = false;
-            $result = $this->_errorResponse("HTTPRequestException#" . $e->getCode(), $e->getMessage());
+            $result = $this->errorResponse("HTTPRequestException#" . $e->getCode(), $e->getMessage());
         }
         curl_close($ch); //PHP5.3中不支持finally关键字。因此，为了兼容，这里取消finally
         $result['isSuccess'] = $success;
@@ -406,7 +406,7 @@ class ManageClient
     /**
      * UserAgent用户代理
      */
-    protected function _getUserAgent()
+    protected function getUserAgent()
     {
         if ($this->type == "TOP") {
             return "ALIMEDIASDK_PHP_TAE/" . Conf::SDK_VERSION;
@@ -418,11 +418,11 @@ class ManageClient
     /**
      * 根据管理接口uri拼接成完整的URL
      */
-    protected function _get_manage_url($uri)
+    protected function getManageUrl($uri)
     {
         return Conf::MANAGE_HOST_MEDIA . $uri;
     }
-    protected function _getNamespaceKey()
+    protected function getNamespaceKey()
     {
         if ($this->type == "TOP") {
             return "namespace";
@@ -434,7 +434,7 @@ class ManageClient
     /**
      * 获取管理鉴权信息
      */
-    protected function _getAuthorization($uri, $date, $httpBody)
+    protected function getAuthorization($uri, $date, $httpBody)
     {
         $stringBeforeSign = "{$uri}\n{$httpBody}\n{$date}"; //1.生成待加签的原始字符串
         $signStr = hash_hmac('sha1', $stringBeforeSign, $this->sk); //2.使用SK对字符串计算HMAC-SHA1签名
@@ -458,7 +458,7 @@ class ManageClient
     /**
      * 反馈错误信息
      */
-    protected function _errorResponse($code = "UnknownError", $message = "unkonown error", $requestId = null)
+    protected function errorResponse($code = "UnknownError", $message = "unkonown error", $requestId = null)
     {
         return array(
             "isSuccess" => false,

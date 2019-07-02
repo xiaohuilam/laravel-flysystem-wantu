@@ -19,7 +19,7 @@ class AlibabaImage
     private $namespace;
     private $type; // "TOP"和"CLOUD"两种模式
 
-    static $RUN_LEVEL = Conf::RUN_LEVEL_RELEASE;    //设置SDK运行级别
+    public static $run_level = Conf::RUN_LEVEL_RELEASE;    //设置SDK运行级别
 
     /**
      * 构造函数

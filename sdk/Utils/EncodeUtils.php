@@ -19,7 +19,7 @@ class EncodeUtils
         return $result;
     }
 
-    public static function new_encodeWithURLSafeBase64($arg)
+    public static function newEncodeWithUrlSafeBase64($arg)
     {
         if ($arg === null || empty($arg)) {
             return null;

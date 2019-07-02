@@ -35,7 +35,7 @@ class UploadClient
     {
         $encodePath = iconv('UTF-8', 'GB2312', $filePath); //中文需要转换成gb2312，file_exist等函数才能识别
         if (!file_exists($encodePath)) {
-            return $this->_errorResponse("FileNotExist", "file not exist");
+            return $this->errorResponse("FileNotExist", "file not exist");
         }
         if (empty($uploadOption)) {
             $uploadOption = new UploadOption();     //如果用户没有传递UploadOption，则生成一个默认的
@@ -46,7 +46,7 @@ class UploadClient
         // UploadPolicy 和 UploadOption检查
         list($isValid, $message) = $this->checkUploadInfo($uploadPolicy, $uploadOption);
         if (!$isValid) {
-            return $this->_errorResponse("ErrorUploadInfo", "error upload policy or option:" . $message);
+            return $this->errorResponse("ErrorUploadInfo", "error upload policy or option:" . $message);
         }
         $fileSize = filesize($encodePath);
         // 文件大于设定的分片大小(默认2M)，则进行分片上传uploadSuperfile()
@@ -69,7 +69,7 @@ class UploadClient
         $data = file_get_contents($filePath);
         $uploadOption->setContent($data);
         $url = $this->upload_host . Conf::UPLOAD_API_UPLOAD;        //普通上传的API
-        return $this->_send_request('POST', $url, $uploadPolicy, $uploadOption);
+        return $this->sendRequest('POST', $url, $uploadPolicy, $uploadOption);
     }
 
     /**
@@ -97,7 +97,7 @@ class UploadClient
                 // 分片初始化阶段
                 $url = $this->upload_host . Conf::UPLOAD_API_BLOCK_INIT;        //初始化分片上传的API
                 $uploadOption->optionType = UpOptionType::BLOCK_INIT_UPLOAD;    //初始化分片时的Option类型
-                $httpRes = $this->_send_request('POST', $url, $uploadPolicy, $uploadOption);
+                $httpRes = $this->sendRequest('POST', $url, $uploadPolicy, $uploadOption);
                 $uploadId = isset($httpRes['uploadId']) ? $httpRes['uploadId'] : null; // 分片上传ID（OSS用于区分上传的id）
                 $id = isset($httpRes['id']) ? $httpRes['id'] : null; // 上传唯一ID（多媒体服务用于区分上传的id）
                 $uploadOption->setUploadId($uploadId);
@@ -107,20 +107,20 @@ class UploadClient
                 $url = $this->upload_host . Conf::UPLOAD_API_BLOCK_UPLOAD;      //分片上传过程中的API
                 $uploadOption->optionType = UpOptionType::BLOCK_RUN_UPLOAD;     //分片上传过程中的Option类型
                 $uploadOption->setPartNumber($i + 1);                           //
-                $httpRes = $this->_send_request('POST', $url, $uploadPolicy, $uploadOption);
+                $httpRes = $this->sendRequest('POST', $url, $uploadPolicy, $uploadOption);
             }
             // 如果分片上传失败，则取消cancel分片上传任务，然后返回错误信息
             if (!$httpRes['isSuccess']) {
                 if ($uploadOption->checkMutipartParas()) {
                     $url = $this->upload_host . Conf::UPLOAD_API_BLOCK_CANCEL;      //取消分片任务的API
                     $uploadOption->optionType = UpOptionType::BLOCK_CANCEL_UPLOAD;  //取消分片任务时的Option类型
-                    $this->_send_request('POST', $url, $uploadPolicy, $uploadOption); // 不判断取消分片任务返回的结果
+                    $this->sendRequest('POST', $url, $uploadPolicy, $uploadOption); // 不判断取消分片任务返回的结果
                 }
                 return $httpRes;
                 //              $message = isset( $httpRes ['message'] ) ? $httpRes ['message'] : null;
                 //              $code = isset( $httpRes ['code'] ) ? $httpRes ['code'] : null;
                 //              $requestId = isset( $httpRes ['requestId'] ) ? $httpRes ['requestId'] : null;
-                //              return $this->_errorResponse ( $code, "fail upload block file:" . $message, $requestId );
+                //              return $this->errorResponse ( $code, "fail upload block file:" . $message, $requestId );
             }
             // 保存 块编号partNumber 和 标记ETag，用于分片完成时的参数设置
             $uploadOption->addPartNumberAndETag($httpRes['partNumber'], $httpRes['eTag']);
@@ -129,7 +129,7 @@ class UploadClient
         $url = $this->upload_host . Conf::UPLOAD_API_BLOCK_COMPLETE;            //完成分片上传任务的API
         $uploadOption->optionType = UpOptionType::BLOCK_COMPLETE_UPLOAD;        //完成分片上传任务时的Option类型
         $uploadOption->setMd5(md5_file($filePath));                         //文件Md5
-        return $this->_send_request('POST', $url, $uploadPolicy, $uploadOption);
+        return $this->sendRequest('POST', $url, $uploadPolicy, $uploadOption);
     }
 
     /**上传字符串/二进制数据
@@ -149,7 +149,7 @@ class UploadClient
         // UploadPolicy 和 UploadOption检查
         list($isValid, $message) = $this->checkUploadInfo($uploadPolicy, $uploadOption);
         if (!$isValid) {
-            return $this->_errorResponse("ErrorUploadInfo", "error upload policy or option:" . $message);
+            return $this->errorResponse("ErrorUploadInfo", "error upload policy or option:" . $message);
         }
         $dataSize = strlen($data);
         // 文件大于设定的分片大小(默认2M)，则进行分片上传uploadSuperfile()
@@ -159,7 +159,7 @@ class UploadClient
         // 文件不大于设定的分片大小(默认2M)，则直接上传uploadMiniFile()
         $uploadOption->setContent($data);
         $url = $this->upload_host . Conf::UPLOAD_API_UPLOAD;        //普通上传的API
-        return $this->_send_request('POST', $url, $uploadPolicy, $uploadOption);
+        return $this->sendRequest('POST', $url, $uploadPolicy, $uploadOption);
     }
 
     /**
@@ -187,7 +187,7 @@ class UploadClient
                 // 分片初始化阶段
                 $url = $this->upload_host . Conf::UPLOAD_API_BLOCK_INIT;        //初始化分片上传的API
                 $uploadOption->optionType = UpOptionType::BLOCK_INIT_UPLOAD;    //初始化分片时的Option类型
-                $httpRes = $this->_send_request('POST', $url, $uploadPolicy, $uploadOption);
+                $httpRes = $this->sendRequest('POST', $url, $uploadPolicy, $uploadOption);
                 $uploadId = isset($httpRes['uploadId']) ? $httpRes['uploadId'] : null; // 分片上传ID（OSS用于区分上传的id）
                 $id = isset($httpRes['id']) ? $httpRes['id'] : null; // 上传唯一ID（多媒体服务用于区分上传的id）
                 $uploadOption->setUploadId($uploadId);
@@ -197,14 +197,14 @@ class UploadClient
                 $url = $this->upload_host . Conf::UPLOAD_API_BLOCK_UPLOAD;      //分片上传过程中的API
                 $uploadOption->optionType = UpOptionType::BLOCK_RUN_UPLOAD;     //分片上传过程中的Option类型
                 $uploadOption->setPartNumber($i + 1);                           //
-                $httpRes = $this->_send_request('POST', $url, $uploadPolicy, $uploadOption);
+                $httpRes = $this->sendRequest('POST', $url, $uploadPolicy, $uploadOption);
             }
             // 如果分片上传失败，则取消cancel分片上传任务，然后返回错误信息
             if (!$httpRes['isSuccess']) {
                 if ($uploadOption->checkMutipartParas()) {
                     $url = $this->upload_host . Conf::UPLOAD_API_BLOCK_CANCEL;      //取消分片任务的API
                     $uploadOption->optionType = UpOptionType::BLOCK_CANCEL_UPLOAD;  //取消分片任务时的Option类型
-                    $this->_send_request('POST', $url, $uploadPolicy, $uploadOption); // 不判断取消分片任务返回的结果
+                    $this->sendRequest('POST', $url, $uploadPolicy, $uploadOption); // 不判断取消分片任务返回的结果
                 }
                 return $httpRes;
             }
@@ -215,7 +215,7 @@ class UploadClient
         $url = $this->upload_host . Conf::UPLOAD_API_BLOCK_COMPLETE;            //完成分片上传任务的API
         $uploadOption->optionType = UpOptionType::BLOCK_COMPLETE_UPLOAD;        //完成分片上传任务时的Option类型
         $uploadOption->setMd5(md5($data));                          //文件Md5
-        return $this->_send_request('POST', $url, $uploadPolicy, $uploadOption);
+        return $this->sendRequest('POST', $url, $uploadPolicy, $uploadOption);
     }
 
     /**
@@ -229,7 +229,7 @@ class UploadClient
     {
         $encodePath = iconv('UTF-8', 'GB2312', $filePath); //中文需要转换成gb2312，file_exist等函数才能识别
         if (!file_exists($encodePath)) {
-            return $this->_errorResponse("FileNotExist", "file not exist");
+            return $this->errorResponse("FileNotExist", "file not exist");
         }
         if (empty($uploadOption)) {
             $uploadOption = new UploadOption();     //如果用户没有传递UploadOption，则生成一个默认的
@@ -256,17 +256,17 @@ class UploadClient
         // UploadPolicy 和 UploadOption检查
         list($isValid, $message) = $this->checkUploadInfo($uploadPolicy, $uploadOption);
         if (!$isValid) {
-            return $this->_errorResponse("ErrorUploadInfo", "error upload policy or option:" . $message);
+            return $this->errorResponse("ErrorUploadInfo", "error upload policy or option:" . $message);
         }
         // 数据大小不等于设定的分片大小(默认2M)，则无法完成初始化
         $dataSize = strlen($blockData);         // 数据文件大小
         if ($dataSize != ($uploadOption->blockSize)) {
-            return $this->_errorResponse("MultipartInitError", "UploadOption's blockSize is not equal to data's size");
+            return $this->errorResponse("MultipartInitError", "UploadOption's blockSize is not equal to data's size");
         }
         $uploadOption->setContent($blockData); // 设置待上传的文件块
         $uploadOption->optionType = UpOptionType::BLOCK_INIT_UPLOAD;    //初始化分片时的Option类型
         $url = $this->upload_host . Conf::UPLOAD_API_BLOCK_INIT;        //初始化分片上传的API
-        $httpRes = $this->_send_request('POST', $url, $uploadPolicy, $uploadOption);
+        $httpRes = $this->sendRequest('POST', $url, $uploadPolicy, $uploadOption);
         //若成功返回，则保存初始化成功的uploadId、id 以及 partNumber、eTag
         $uploadId = isset($httpRes['uploadId']) ? $httpRes['uploadId'] : null; // 分片上传ID（OSS用于区分上传的id）
         $id = isset($httpRes['id']) ? $httpRes['id'] : null; // 上传唯一ID（多媒体服务用于区分上传的id）
@@ -288,7 +288,7 @@ class UploadClient
     {
         $encodePath = iconv('UTF-8', 'GB2312', $filePath); //中文需要转换成gb2312，file_exist等函数才能识别
         if (!file_exists($encodePath)) {
-            return $this->_errorResponse("FileNotExist", "file not exist");
+            return $this->errorResponse("FileNotExist", "file not exist");
         }
         $fileSize = filesize($encodePath);      // 文件大小
         $blockSize = $uploadOption->blockSize;  // 文件分片大小
@@ -314,12 +314,12 @@ class UploadClient
         $partNumber = $uploadOption->getPartNumber(); //php 5.3的版本使用empty()传递函数返回值会报错。所以为了兼容，增加临时变量
         // 检查分片上传所需的参数是否设置正确
         if (!$uploadOption->checkMutipartParas() || empty($partNumber)) {
-            return $this->_errorResponse("MultipartUploadError", "multipart upload's parameters(id,uploadId,partNumber) error");
+            return $this->errorResponse("MultipartUploadError", "multipart upload's parameters(id,uploadId,partNumber) error");
         }
         $uploadOption->setContent($blockData); // 设置待上传的文件块
         $uploadOption->optionType = UpOptionType::BLOCK_RUN_UPLOAD;     //分片上传过程中的Option类型
         $url = $this->upload_host . Conf::UPLOAD_API_BLOCK_UPLOAD;      //分片上传过程中的API
-        $httpRes = $this->_send_request('POST', $url, $uploadPolicy, $uploadOption);
+        $httpRes = $this->sendRequest('POST', $url, $uploadPolicy, $uploadOption);
         if (isset($httpRes['partNumber']) && isset($httpRes['eTag'])) {
             $uploadOption->addPartNumberAndETag($httpRes['partNumber'], $httpRes['eTag']);
         }
@@ -337,11 +337,11 @@ class UploadClient
  // 检查分片上传所需的参数是否设置正确
         $fileMd5 = $uploadOption->getMd5(); //php 5.3的版本使用empty()传递函数返回值会报错。所以为了兼容，增加临时变量
         if (!$uploadOption->checkMutipartParas() || empty($fileMd5)) {
-            return $this->_errorResponse("MultipartCompleteError", "multipart upload's parameters(id,uploadId,md5) error");
+            return $this->errorResponse("MultipartCompleteError", "multipart upload's parameters(id,uploadId,md5) error");
         }
         $url = $this->upload_host . Conf::UPLOAD_API_BLOCK_COMPLETE;            //完成分片上传任务的API
         $uploadOption->optionType = UpOptionType::BLOCK_COMPLETE_UPLOAD;        //完成分片上传任务时的Option类型
-        return $this->_send_request('POST', $url, $uploadPolicy, $uploadOption);
+        return $this->sendRequest('POST', $url, $uploadPolicy, $uploadOption);
     }
 
     /**
@@ -353,11 +353,11 @@ class UploadClient
     public function multipartCancel(UploadPolicy $uploadPolicy, UploadOption $uploadOption)
     {
         if (!$uploadOption->checkMutipartParas()) {
-            return $this->_errorResponse("MultipartCancelError", "multipart upload's parameters(id,uploadId) error");
+            return $this->errorResponse("MultipartCancelError", "multipart upload's parameters(id,uploadId) error");
         }
         $url = $this->upload_host . Conf::UPLOAD_API_BLOCK_CANCEL;      //取消分片任务的API
         $uploadOption->optionType = UpOptionType::BLOCK_CANCEL_UPLOAD;  //取消分片任务时的Option类型
-        return $this->_send_request('POST', $url, $uploadPolicy, $uploadOption);
+        return $this->sendRequest('POST', $url, $uploadPolicy, $uploadOption);
     }
 
     /**
@@ -368,7 +368,7 @@ class UploadClient
      * @param UploadOption $uploadOption
      * @return array (isSuccess, ...)
      */
-    protected function _send_request($method, $url, UploadPolicy $uploadPolicy, UploadOption $uploadOption)
+    protected function sendRequest($method, $url, UploadPolicy $uploadPolicy, UploadOption $uploadOption)
     {
         $success = false;
         $http_code = 0;
@@ -382,10 +382,10 @@ class UploadClient
             $_headers = array('Expect:');
             $token = $this->_getUploadToken($uploadPolicy);
             array_push($_headers, "Authorization: {$token}");
-            array_push($_headers, "User-Agent: {$this->_getUserAgent()}");
+            array_push($_headers, "User-Agent: {$this->getUserAgent()}");
             $length = 0;
             if (!empty($uploadOption)) {
-                list($contentType, $httpBody) = $this->BuildMultipartForm($uploadOption);
+                list($contentType, $httpBody) = $this->buildMultipartForm($uploadOption);
                 $length = @strlen($httpBody);
                 array_push($_headers, "Content-Type: {$contentType}");
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $httpBody);            //请求体
@@ -414,7 +414,7 @@ class UploadClient
             }
             if ($response === false) {
                 $this->recordCurlErrorLog($ch); //记录最近一次curl执行错误日志
-                $result = $this->_errorResponse("curl error", "curl request failed");
+                $result = $this->errorResponse("curl error", "curl request failed");
                 $result['errno'] = curl_errno($ch); //错误码
             } else {
                 //解析返回结果，并判断是否上传成功
@@ -426,7 +426,7 @@ class UploadClient
                 $result = (empty($resArray) ? $result : $resArray);
             }
         } catch (Exception $e) {
-            $result = $this->_errorResponse("HTTPRequestException#" . $e->getLine(), $e->getMessage());
+            $result = $this->errorResponse("HTTPRequestException#" . $e->getLine(), $e->getMessage());
         }
 
         curl_close($ch); //PHP5.3中不支持finally关键字。因此，为了兼容，这里取消finally
@@ -484,7 +484,7 @@ class UploadClient
      * @param UploadOption $uploadOption
      * @return array (contentType,httpBody)
      */
-    protected function BuildMultipartForm(UploadOption $uploadOption)
+    protected function buildMultipartForm(UploadOption $uploadOption)
     {
         $bodyArray = array();
         $mimeBoundary = md5(microtime());
@@ -521,7 +521,7 @@ class UploadClient
     /**
      * UserAgent用户代理
      */
-    protected function _getUserAgent()
+    protected function getUserAgent()
     {
         if ($this->type == "TOP") {
             return "ALIMEDIASDK_PHP_TAE/" . Conf::SDK_VERSION;
@@ -530,17 +530,12 @@ class UploadClient
         }
     }
 
-    public function getUploadToken(UploadPolicy $uploadPolicy)
-    {
-        return $this->_getUploadToken($uploadPolicy);
-    }
-
     /**
      * 生成上传凭证
      * @param UploadPolicy $uploadPolicy
      * @return string 上传时的凭证token
      */
-    protected function _getUploadToken(UploadPolicy $uploadPolicy)
+    public function getUploadToken(UploadPolicy $uploadPolicy)
     {
         $encodedPolicy = EncodeUtils::encodeWithURLSafeBase64(json_encode($uploadPolicy->toArray()));
         $signed = hash_hmac('sha1', $encodedPolicy, $this->sk);
@@ -553,7 +548,7 @@ class UploadClient
     /**
      * 反馈错误信息
      */
-    protected function _errorResponse($code = "UnknownError", $message = "unkonown error", $requestId = null)
+    protected function errorResponse($code = "UnknownError", $message = "unkonown error", $requestId = null)
     {
         return array(
             "isSuccess" => false,
@@ -569,7 +564,7 @@ class UploadClient
      */
     protected function recordCurlErrorLog($ch)
     {
-        if (AlibabaImage::$RUN_LEVEL == Conf::RUN_LEVEL_DEBUG) {
+        if (AlibabaImage::$run_level == Conf::RUN_LEVEL_DEBUG) {
             $errno = curl_errno($ch); //错误码
             $info  = curl_getinfo($ch); //curl连接资源句柄的信息
             $info['errno'] = $errno; //添加到连接句柄信息中

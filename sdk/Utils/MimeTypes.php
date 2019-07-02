@@ -132,7 +132,7 @@ class MimeTypes
         "lrc" => "application/lrc"
     );
 
-    public static function get_mimetype($ext)
+    public static function getMimetype($ext)
     {
         $ext = strtolower($ext);
         return (isset(self::$mime_types[$ext]) ? self::$mime_types[$ext] : 'application/octet-stream');

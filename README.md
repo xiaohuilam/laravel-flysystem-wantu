@@ -14,6 +14,8 @@ Laravel 文件系统顽兔适配包。
 - [![build.svg](https://badges.herokuapp.com/travis/xiaohuilam/laravel-flysystem-wantu?branch=master&env=LARAVEL=%275.4.*%27&label=5.4)](https://travis-ci.org/xiaohuilam/laravel-flysystem-wantu)
 - [![build.svg](https://badges.herokuapp.com/travis/xiaohuilam/laravel-flysystem-wantu?branch=master&env=LARAVEL=%275.3.*%27&label=5.3)](https://travis-ci.org/xiaohuilam/laravel-flysystem-wantu)
 - [![build.svg](https://badges.herokuapp.com/travis/xiaohuilam/laravel-flysystem-wantu?branch=master&env=LARAVEL=%275.2.*%27&label=5.2)](https://travis-ci.org/xiaohuilam/laravel-flysystem-wantu)
+- [![build.svg](https://badges.herokuapp.com/travis/xiaohuilam/laravel-flysystem-wantu?branch=master&env=LARAVEL=%275.1.*%27&label=5.1)](https://travis-ci.org/xiaohuilam/laravel-flysystem-wantu)
+- [![build.svg](https://badges.herokuapp.com/travis/xiaohuilam/laravel-flysystem-wantu?branch=master&env=LARAVEL=%275.0.*%27&label=5.0)](https://travis-ci.org/xiaohuilam/laravel-flysystem-wantu)
 
 
 ## 安装

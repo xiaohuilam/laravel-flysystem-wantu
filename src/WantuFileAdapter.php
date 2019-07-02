@@ -207,7 +207,7 @@ class WantuFileAdapter extends AbstractAdapter
     public function has($path)
     {
         if (Str::endsWith($path, "/")) {
-            return $this->client->existsFolder($this->namespace,  preg_replace('/^\./' , '', dirname( $path)));
+            return $this->client->existsFolder($this->namespace, preg_replace('/^\./', '', dirname($path)));
         } else {
             return $this->client->existsFile($this->namespace, preg_replace('/^\./', '', dirname($path)), last(explode("/", $path)));
         }
@@ -348,7 +348,7 @@ class WantuFileAdapter extends AbstractAdapter
     {
         if ($option === null) {
             $option = ['name' => null, 'ttl' => 3600, ];
-        } else if (!isset($option['ttl']) || !$option['ttl']) {
+        } elseif (!isset($option['ttl']) || !$option['ttl']) {
             $option['ttl'] = 3600;
         }
 

@@ -26,13 +26,13 @@ class Conf
     const INSERT_ONLY_TRUE = 1;            //文件上传不可覆盖
     const INSERT_ONLY_NONE = 0;            //文件上传可覆盖
 
-    const MIN_OBJ_SIZE = 102400;        //1024*100;
+    const MIN_OBJ_SIZE = 1;        //1024*100;
     const HTTP_TIMEOUT = 30;            //http的超时时间：30s
     const HTTP_RETRY = 1;                //http失败后重试：1
 
     const BLOCK_MIN_SIZE = 102400;        //文件分片最小值：1024*100; 100K
-    const BLOCK_DEFF_SIZE = 2097152;    //文件分片默认值：1024*1024*2; 2M
-    const BLOCK_MAX_SIZE = 10485760;    //文件分片最大值：1024*1024*10; 10M
+    const BLOCK_DEFF_SIZE = 209715200;    //文件分片默认值：1024*1024*2; 2M
+    const BLOCK_MAX_SIZE = 104857600;    //文件分片最大值：1024*1024*10; 10M
 
     const CURL_ERR_LOG = "curl_error.log";    //curl请求时的错误日志信息
 

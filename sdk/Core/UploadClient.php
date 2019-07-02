@@ -372,6 +372,9 @@ class UploadClient
     {
         $success = false;
         $result = array();
+        /**
+         * @var resource $ch
+         */
         $ch = curl_init();
         try {
             //构建Http请求头和请求体
@@ -403,12 +406,12 @@ class UploadClient
             }
             //执行上传，然后获取服务端返回，决定是否重试
             $response = curl_exec($ch);
-            if ($response == false && $uploadOption->httpReTry != 0) {
+            if ($response === false && $uploadOption->httpReTry != 0) {
                 //如果执行curl失败，且需要重试，则进行重试
                 $this->recordCurlErrorLog($ch); //记录最近一次curl执行错误日志
                 $response = curl_exec($ch);
             }
-            if ($response == false) {
+            if ($response === false) {
                 $this->recordCurlErrorLog($ch); //记录最近一次curl执行错误日志
                 $result = $this->_errorResponse("curl error", "curl request failed");
                 $result['errno'] = curl_errno($ch); //错误码
@@ -416,7 +419,7 @@ class UploadClient
                 //解析返回结果，并判断是否上传成功
                 $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
                 $success = ($http_code == 200) ? true : false;                  //判断是否上传成功
-                $resStr = explode("\r\n\r\n", $response);
+                $resStr = explode("\r\n\r\n", $response, 2);
                 $resBody = isset($resStr[1]) ? $resStr[1] : '';
                 $resArray = json_decode($resBody, true);                        //解析得到结果
                 $result = (empty($resArray) ? $result : $resArray);

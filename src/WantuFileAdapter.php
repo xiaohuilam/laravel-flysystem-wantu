@@ -30,8 +30,6 @@ class WantuFileAdapter extends AbstractAdapter
     private $domain = null;
 
     /**
-     * QiniuAdapter constructor.
-     *
      * @param string $accessKey
      * @param string $secretKey
      * @param string $namespace
@@ -334,78 +332,6 @@ class WantuFileAdapter extends AbstractAdapter
      */
     public function getTimestamp($path)
     {
-    }
-
-
-    /**
-     * @param \Qiniu\Storage\BucketManager $manager
-     *
-     * @return $this
-     */
-    public function setBucketManager(BucketManager $manager)
-    {
-    }
-
-
-    /**
-     * @param \Qiniu\Storage\UploadManager $manager
-     *
-     * @return $this
-     */
-    public function setUploadManager(UploadManager $manager)
-    {
-    }
-
-
-    /**
-     * @param \Qiniu\Auth $manager
-     *
-     * @return $this
-     */
-    public function setAuthManager(Auth $manager)
-    {
-    }
-
-    /**
-     * @param CdnManager $manager
-     *
-     * @return $this
-     */
-    public function setCdnManager(CdnManager $manager)
-    {
-    }
-
-
-    /**
-     * @return \Qiniu\Storage\BucketManager
-     */
-    public function getBucketManager()
-    {
-        return $this->bucketManager ?: $this->bucketManager = new BucketManager($this->getAuthManager());
-    }
-
-    /**
-     * @return \Qiniu\Auth
-     */
-    public function getAuthManager()
-    {
-        return $this->authManager ?: $this->authManager = new Auth($this->accessKey, $this->secretKey);
-    }
-
-    /**
-     * @return \Qiniu\Storage\UploadManager
-     */
-    public function getUploadManager()
-    {
-        return $this->uploadManager ?: $this->uploadManager = new UploadManager();
-    }
-
-    /**
-     * @return \Qiniu\Cdn\CdnManager
-     */
-    public function getCdnManager()
-    {
-        return $this->cdnManager ?: $this->cdnManager = new CdnManager($this->getAuthManager());
     }
 
     /**

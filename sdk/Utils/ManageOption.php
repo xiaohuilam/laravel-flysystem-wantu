@@ -176,7 +176,7 @@ final class ManageOption extends ResourceInfo
 	 * @param string $name 文件名。不能为空
 	 * @param bool $type 黄图类型[必须]。0或者1，0是非黄图，1是黄图
 	 * @param bool $wrong 鉴黄判断[必须]。true代表用户认为多媒体鉴黄服务的结果有问题。当为true的时候必须传score
-	 * @param decimal $score 黄图分值。[可选]取值范围[0-1]，值越高则是黄图可能性越高
+	 * @param float $score 黄图分值。[可选]取值范围[0-1]，值越高则是黄图可能性越高
 	 */
 	public function addPornFbInfo($namespace = null, $dir = null, $name = null, $type = null, $wrong = null, $score = null)
 	{

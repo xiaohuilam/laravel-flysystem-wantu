@@ -1,4 +1,5 @@
 <?php
+
 namespace AliMedia\Utils;
 
 use AliMedia\Conf\Conf;
@@ -156,7 +157,6 @@ class UploadOption
 	public function addPartNumberAndETag($partNumber, $eTag)
 	{
 		$this->eTag = $eTag;
-		$tempArray = array("partNumber" => $partNumber, "eTag" => $eTag);
 		array_push($this->array_PartNum_ETag, array("partNumber" => $partNumber, "eTag" => $eTag));
 	}
 	/**检测分片上传的参数。即uploadId、uniqueId是否有值*/

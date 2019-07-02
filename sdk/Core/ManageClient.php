@@ -6,6 +6,7 @@ use AliMedia\Utils\MediaResOption;
 use AliMedia\Conf\Conf;
 use AliMedia\Utils\ResourceInfo;
 use AliMedia\Utils\EncodeUtils;
+use Exception;
 
 class ManageClient
 {

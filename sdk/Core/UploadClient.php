@@ -7,6 +7,7 @@ use AliMedia\Utils\UploadOption;
 use AliMedia\Utils\UploadPolicy;
 use AliMedia\Utils\UpOptionType;
 use XiaohuiLam\LaravelFilesystem\Wantu\UploadException;
+use Exception;
 
 class UploadClient
 {

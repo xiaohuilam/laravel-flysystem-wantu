@@ -1,12 +1,19 @@
-# Laravel 顽兔
+# 𝐋𝐚𝐫𝐚𝐯𝐞𝐥 顽兔
 Laravel 文件系统顽兔适配包。
 
 
 ## 版本适配
+
 - ![php5.6+.svg](https://img.shields.io/badge/PHP-5.6+-4c1.svg)
 - ![laravel5.2+.svg](https://img.shields.io/badge/Laravel-5.0+-4c1.svg)
 
+
 ## 单元测试
+
+**代码质量**
+- [![code-quality.svg](https://scrutinizer-ci.com/g/xiaohuilam/laravel-flysystem-wantu/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/xiaohuilam/laravel-flysystem-wantu/)
+
+**持续集成(按 Laravel 版本)**
 - [![build.svg](https://badges.herokuapp.com/travis/xiaohuilam/laravel-flysystem-wantu?branch=master&env=LARAVEL=%275.8.*%27&label=5.8)](https://travis-ci.org/xiaohuilam/laravel-flysystem-wantu)
 - [![build.svg](https://badges.herokuapp.com/travis/xiaohuilam/laravel-flysystem-wantu?branch=master&env=LARAVEL=%275.7.*%27&label=5.7)](https://travis-ci.org/xiaohuilam/laravel-flysystem-wantu)
 - [![build.svg](https://badges.herokuapp.com/travis/xiaohuilam/laravel-flysystem-wantu?branch=master&env=LARAVEL=%275.6.*%27&label=5.6)](https://travis-ci.org/xiaohuilam/laravel-flysystem-wantu)
@@ -38,4 +45,5 @@ return [
 
 
 ## 授权
+
 MIT

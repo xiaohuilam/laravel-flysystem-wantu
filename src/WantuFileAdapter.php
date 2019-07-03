@@ -15,9 +15,9 @@ class WantuFileAdapter extends AbstractAdapter
     use NotSupportingVisibilityTrait;
 
     /**
-     * @var Client|null
+     * @var Client
      */
-    private $client = null;
+    private $client;
 
     /**
      * @var string

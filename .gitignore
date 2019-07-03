@@ -1,5 +1,5 @@
 vendor/
-tests/
 composer.lock
 .DS_Store
 *.patch
+.phpunit.result.cache

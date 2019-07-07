@@ -31,13 +31,22 @@
         "squizlabs/php_codesniffer": "*",
         "fzaninotto/faker": "*",
         "mockery/mockery": "*",
-        "xiaohuilam/laravel-test": ">=v0.0.1"
+        "xiaohuilam/laravel-test": ">=v0.0.1",
+        "wikimedia/composer-merge-plugin": ">=1.4.1"
     },
     "extra": {
         "laravel": {
             "providers": [
                 "XiaohuiLam\\LaravelFilesystem\\Wantu\\WantuFileServiceProvider"
             ]
+        },
+        "merge-plugin": {
+            "include": [
+                "vendor/laravel/laravel/composer.json"
+            ],
+            "recurse": true,
+            "replace": true,
+            "merge-dev": true
         }
     }
 }
